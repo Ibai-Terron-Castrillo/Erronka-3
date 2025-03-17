@@ -1,10 +1,21 @@
 $(document).ready(function () {
   let currentPage = 1
+  $("#search-button").on("click", function (e) {
+    e.preventDefault();
+    currentPage = 1;
+    $('#movies').empty();
+    loadMovies(currentPage);
+});
   function loadMovies (page) {
+    var search = $("#search").val();
+    var generoa = $("#genero-search").val();
+    var sailkapena = $("#sailkapena-search").val();
+
+
     $.ajax({
       url: 'KargatuPelikulak.php?page=1',
       type: 'GET',
-      data: { page: page },
+      data: { page: page, search: search, generoa: generoa, sailkapena: sailkapena },
       dataType: 'json',
       success: function (data) {
         if (data.length > 0) {

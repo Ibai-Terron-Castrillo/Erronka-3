@@ -30,6 +30,35 @@ session_start();
                 </p>
             </div>
         </div>
+        <div>
+            <form class="form-inline" id="search-form">
+                <input class="form-control" type="search" placeholder="Bilatu..." aria-label="Search" id="search">
+                <select name="generoa" id="genero-search">
+                    <option value="">Generoa</option>
+                    <?PHP require_once("db.php");
+                    $conn = konexioaSortu();
+                    $sql = "SELECT DISTINCT generoa FROM pelikula";
+                    $result = $conn->query($sql);
+                    while ($row = $result->fetch_assoc()) {
+                        $generoa = $row['generoa'];
+                        echo "<option value='$generoa'>$generoa</option>";
+                    }
+                    ?>
+                </select>
+                <select name="sailkapena" id="sailkapena-search">
+                    <option value="">Sailkapena</option>
+                    <?PHP
+                    $sql1 = "SELECT DISTINCT sailkapena FROM pelikula";
+                    $result = $conn->query($sql1);
+                    while ($row = $result->fetch_assoc()) {
+                        $sailkapena = $row['sailkapena'];
+                        echo "<option value='$sailkapena'>$sailkapena</option>";
+                    }
+                    ?>
+                </select>
+                <button class="btn btn-primary" id="search-button" type="submit">Bilatu</button>
+            </form>
+        </div>
         <!-- Content Row-->
         <div class="row gx-4 gx-lg-5" id="movies">
 
