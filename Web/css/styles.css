@@ -415,6 +415,12 @@ fieldset {
   border: 0;
 }
 
+.welcome{
+  margin-top: 10%;
+  color: white !important;
+  text-align: center;
+  font-size: 30px;
+}
 legend {
   float: left;
   width: 100%;
@@ -2051,6 +2057,43 @@ display: inline;
           appearance: none;
   border-radius: 0.375rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+@media screen and (max-width: 600px) {
+  .login{
+    width: 100%;
+    margin-right: auto;
+    border-radius: 10px;
+  }
+}
+
+.login{
+  width: 70%;
+  margin-left: auto;
+  margin-top: 5%;
+  padding: 5%;
+  border-radius: 10px;
+}
+
+.login input{
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+.login a{
+  color: white;
+  margin-left: 1%;
+}
+.login .btn{
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #007bff;
+  color: #fff;
 }
 
 @media screen and (max-width: 600px) {

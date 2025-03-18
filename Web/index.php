@@ -20,7 +20,12 @@ session_start();
             <div class="card col-lg-5">
                 <h1 class="font-weight-light">Ongi etorri El Umbral zinemara!</h1>
                 <p>Non fikzioaren eta errealitatearen arteko lerroa desitxuratu egiten den</p>
-                <a class="btn btn-primary" href="#!">Hasi saioa erreserbak egiteko</a>
+                <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+                    echo '<span class="welcome">Ongi etorri, ' . $_SESSION['izena'] . '!</span>';
+                } else {
+                    echo '<a class="btn btn-primary" href="login.php">Hasi saioa erreserbak egiteko</a>';
+                }
+                ?>
             </div>
         </div>
         <!-- Call to Action-->
