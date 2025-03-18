@@ -29,8 +29,10 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                 exit();
             }
         } else {
-            header('Location: index.php');
-            exit();
+            echo "<script>
+                    alert('Erabiltzaile hori ez da existitzen');
+                    window.location.href='index.php';
+                  </script>";
         }
     } else {
         echo "<script>

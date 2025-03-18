@@ -7,6 +7,11 @@
                         <li class="nav-item"><a class="nav-link" href="index.php">Hasiera</a></li>
                         <li class="nav-item"><a class="nav-link" href="GuriBuruz.php">Guri Buruz</a></li>
                         <li class="nav-item"><a class="nav-link" href="#!">Kontaktua</a></li>
+                        <?php
+                        if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+                            echo '<li class="nav-item"><a class="nav-link" href="perfil.php">Profila</a></li>';
+                        }
+                        ?>
                     </ul>
                 </div>
             </div>

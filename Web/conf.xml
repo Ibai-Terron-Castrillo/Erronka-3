@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<configuration>
+    <user>
+        <id>1</id>
+        <theme>night</theme>
+    </user>
+    <user>
+        <id>2</id>
+        <theme>night</theme>
+    </user>
+<user><id>152</id><theme>night</theme></user></configuration>

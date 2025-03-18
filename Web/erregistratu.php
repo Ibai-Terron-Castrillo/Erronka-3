@@ -6,7 +6,7 @@ session_start();
 
 <head>
     <?PHP require_once("head.php"); ?>
-    <title>Saioa Hasi</title>
+    <title>Kontua Sortu</title>
 </head>
 
 <body>

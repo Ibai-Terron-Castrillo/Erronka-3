@@ -19,7 +19,7 @@ session_start();
             <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="assets/cine.jpg" alt="..." /></div>
             <div class="card col-lg-5">
                 <h1 class="font-weight-light">Ongi etorri El Umbral zinemara!</h1>
-                <p>Non fikzioaren eta errealitatearen arteko lerroa desitxuratu egiten den</p>
+                <p>Non fikzio eta errealitatearen arteko lerroa desitxuratu egiten den</p>
                 <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
                     echo '<span class="welcome">Ongi etorri, ' . $_SESSION['izena'] . '!</span>';
                 } else {

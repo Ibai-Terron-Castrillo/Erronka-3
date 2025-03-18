@@ -414,7 +414,13 @@ fieldset {
   margin: 0;
   border: 0;
 }
+.profile{
+  margin-bottom: 20%;
+  align-self: center;
+  color: white !important;
 
+  
+}
 .welcome{
   margin-top: 10%;
   color: white !important;
@@ -2064,6 +2070,7 @@ display: inline;
     width: 100%;
     margin-right: auto;
     border-radius: 10px;
+    margin-bottom: 20%;
   }
 }
 
@@ -2071,6 +2078,7 @@ display: inline;
   width: 70%;
   margin-left: auto;
   margin-top: 5%;
+  margin-bottom: 20%;
   padding: 5%;
   border-radius: 10px;
 }
