@@ -11022,3 +11022,50 @@ footer a {
 footer a:hover {
     color: #9b1c1c !important; /* Rojo vino */
 }
+
+
+/* Bloque gris con imagen y texto */
+.info-box {
+  background-color: #343a40; /* Gris del archivo actual */
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para Gure Misioa eta Ikuspegia */
+.mission-box, .vision-box {
+  background-color:#6c757d;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.mission-box h3, .vision-box h3 {
+  color: white;
+  font-weight: bold;
+}
+
+.mission-box p, .vision-box p {
+  color: white;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+/* Bloque gris para Gure Taldea */
+.team-box {
+  background-color: #6c757d; /* Mismo gris usado en las otras secciones */
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+.gold-title {
+  color: #FFD700; /* Dorado */
+  font-weight: bold;
+}
+
+
+
+
+
+
