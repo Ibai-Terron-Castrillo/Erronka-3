@@ -69,7 +69,7 @@ FROM `erronka3`.`pelikula` WHERE id = $id";
             <div class="card-body">
                 <?php
                 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-                    $sql1 = "SELECT aretoa.izena AS aretoa, ordutegia.ordua AS ordua, ordutegia.id AS id_ordutegia
+                    $sql1 = "SELECT aretoa.izena AS aretoa, ordutegia.ordua AS ordua, ordutegia.id AS id_ordutegia, ordutegia.eguna AS eguna
 FROM ordutegia
 JOIN aretoa ON ordutegia.id_areto = aretoa.id
 WHERE ordutegia.id_pelikula = ?
@@ -84,7 +84,8 @@ WHERE ordutegia.id_pelikula = ?
                             $aretoa = $row['aretoa'];
                             $ordua = $row['ordua'];
                             $id_ordutegia = $row['id_ordutegia'];
-                            echo "<a href='erreserba.php?idOrdutegia=$id_ordutegia&idPelikula=$id' class='btn btn-primary' style='margin-right: 2%; margin-top: 2%;'>$aretoa - $ordua</a>";
+                            $eguna = $row['eguna'];
+                            echo "<a href='erreserba.php?idOrdutegia=$id_ordutegia&idPelikula=$id&eguna=$eguna' class='btn btn-primary' style='margin-right: 2%; margin-top: 2%;'>$aretoa - $eguna - $ordua</a>";
                         }
                     } else {
                         echo "<p class='text-white m-0'>Ez dago informaziorik</p>";
