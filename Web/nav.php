@@ -6,7 +6,7 @@
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="index.php">Hasiera</a></li>
                         <li class="nav-item"><a class="nav-link" href="GuriBuruz.php">Guri Buruz</a></li>
-                        <li class="nav-item"><a class="nav-link" href="Kontaktua">Kontaktua</a></li>
+                        <li class="nav-item"><a class="nav-link" href="Kontaktua.php">Kontaktua</a></li>
                         <?php
                         if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
                             echo '<li class="nav-item"><a class="nav-link" href="perfil.php">Profila</a></li>';
