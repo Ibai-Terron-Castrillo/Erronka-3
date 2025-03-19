@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kontaktuak>
+    <mezua>
+        <email>example1@example.com</email>
+        <testua>Hau da nire lehen mezua.</testua>
+    </mezua>
+    <mezua>
+        <email>example2@example.com</email>
+        <testua>Hau da nire bigarren mezua.</testua>
+    </mezua>
+    <mezua>
+        <email>joshe@gmail.com</email>
+        <testua>kaixo</testua>
+    </mezua>
+    <mezua>
+        <email>aitorauzmen@gmail.com</email>
+        <testua>ewwfregh</testua>
+    </mezua>
+    <mezua>
+        <email>blanco.zizurbhi@gmail.com</email>
+        <testua>qgre</testua>
+    </mezua>
+    <mezua>
+        <email>artia1619@hotmail.com</email>
+        <testua>aaa</testua>
+    </mezua>
+    <mezua>
+        <email>artia1619@hotmail.com</email>
+        <testua>2345</testua>
+    </mezua>
+    <mezua>
+        <email>igorblancoauzmendi@gmail.com</email>
+        <testua>ad</testua>
+    </mezua>
+    <mezua>
+        <email>igorblancoauzmendi@gmail.com</email>
+        <testua>dss</testua>
+    </mezua>
+    <mezua>
+        <email>artia1619@hotmail.com</email>
+        <testua>asa</testua>
+    </mezua>
+    <mezua>
+        <email>artia1619@hotmail.com</email>
+        <testua>2345</testua>
+    </mezua>
+    <mezua>
+        <email>aitorauzmen@gmail.com</email>
+        <testua>sfdf</testua>
+    </mezua>
+    <mezua>
+        <email>artia1619@hotmail.com</email>
+        <testua>qwerty</testua>
+    </mezua>
+<mezua><email>artia1619@hotmail.com</email><testua>wges</testua></mezua><mezua><email>aitorauzmen@gmail.com</email><testua>fg</testua></mezua></kontaktuak>

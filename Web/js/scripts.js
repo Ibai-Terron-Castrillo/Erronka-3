@@ -48,4 +48,34 @@ $(document).ready(function () {
     currentPage++
     loadMovies(currentPage)
   })
+  
 })
+/*Iruzkinak*/
+$(document).ready(function() {
+  $("#contactForm").submit(function(event) {
+      event.preventDefault();
+      
+      var formData = new FormData(this);
+      
+      $.ajax({
+          url: "kontaktuak.php",
+          type: "POST",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(response) {
+              alert("Mezua bidali da!");
+              location.reload();
+          },
+          error: function() {
+              alert("Errorea gertatu da. Saiatu berriro.");
+          }
+      });
+  });
+});
+
+
+
+
+
+  
