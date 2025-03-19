@@ -68,7 +68,31 @@ FROM `erronka3`.`pelikula` WHERE id = $id";
         <div class="card text-white bg-secondary my-5 py-4 text-center">
             <div class="card-body">
                 <?php
-                //logueatuta dagoen erabiltzailea erreserbara eta logueatu gabekoa saioa hasieratzeko botoiak
+                if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+                    $sql1 = "SELECT aretoa.izena AS aretoa, ordutegia.ordua AS ordua, ordutegia.id AS id_ordutegia
+FROM ordutegia
+JOIN aretoa ON ordutegia.id_areto = aretoa.id
+WHERE ordutegia.id_pelikula = ?
+";
+                    $stmt = $conn->prepare($sql1);
+                    $stmt->bind_param("i", $id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    if ($result->num_rows > 0) {
+                        echo "<h2 class='text-white m-0'>Ordutegiak:</h2>";
+                        while ($row = $result->fetch_assoc()) {
+                            $aretoa = $row['aretoa'];
+                            $ordua = $row['ordua'];
+                            $id_ordutegia = $row['id_ordutegia'];
+                            echo "<a href='erreserba.php?idOrdutegia=$id_ordutegia&idPelikula=$id' class='btn btn-primary' style='margin-right: 2%; margin-top: 2%;'>$aretoa - $ordua</a>";
+                        }
+                    } else {
+                        echo "<p class='text-white m-0'>Ez dago informaziorik</p>";
+                    }
+
+                } else {
+                    echo '<a href="login.php" class="btn btn-primary">Hasi saioa erreserbak egiteko</a>';
+                }
                 ?>
             </div>
         </div>

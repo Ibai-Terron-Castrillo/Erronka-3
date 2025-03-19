@@ -11415,6 +11415,44 @@ body {
   color: white !important; /* Texto oscuro para contraste */
 }
 
+.seat {
+  display: inline-block;
+  margin: 5px;
+  cursor: pointer;
+  }
+  .seat svg {
+  transition: transform 0.2s;
+  }
+  .seat:hover svg {
+  transform: scale(1.1);
+  }
+  .seat rect {
+  rx: 10;
+  ry: 10;
+  }
+  .pantaila {
+  margin-top: 20px;
+  background-color: white;
+  width: 75%;
+  margin: 0 auto;
+  text-align: center;
+  border-radius: 10px;
+  height: 40px;
+  margin-top: 20px;
+  font-size: 10px;
+  }
+  .zinema {
+  text-align: center; 
+  width: 42%; 
+  background-color: #4a4a4a;
+  border-radius: 10px;
+  height: fit-content;
+  margin-top: 50px;
+  margin-left: 29%;
+  margin-right: 29%;
+  margin-bottom: 20%;
+  padding: 20px;
+  }
 
 header {
     background-color: #333333 !important; /* Gris oscuro */

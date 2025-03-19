@@ -2077,6 +2077,7 @@ display: inline;
 .login{
   width: 70%;
   margin-left: auto;
+  margin-right: auto;
   margin-top: 5%;
   margin-bottom: 20%;
   padding: 5%;
@@ -4485,6 +4486,45 @@ textarea.form-control-lg {
     border-bottom-left-radius: 0;
   }
 }
+
+.seat {
+  display: inline-block;
+  margin: 5px;
+  cursor: pointer;
+  }
+  .seat svg {
+  transition: transform 0.2s;
+  }
+  .seat:hover svg {
+  transform: scale(1.1);
+  }
+  .seat rect {
+  rx: 10;
+  ry: 10;
+  }
+  .pantaila {
+  margin-top: 20px;
+  background-color: white;
+  width: 75%;
+  margin: 0 auto;
+  text-align: center;
+  border-radius: 10px;
+  height: 40px;
+  margin-top: 20px;
+  font-size: 10px;
+  }
+  .zinema {
+  text-align: center; 
+  width: 42%; 
+  background-color: #4a4a4a;
+  border-radius: 10px;
+  height: fit-content;
+  margin-top: 50px;
+  margin-left: 29%;
+  margin-right: 29%;
+  margin-bottom: 20%;
+  padding: 20px;
+  }
 
 .accordion {
   --bs-accordion-color: #212529;
