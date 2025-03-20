@@ -24,7 +24,7 @@ session_start();
         $row = $result->fetch_assoc();
         $ordua = $row['ordua'];
     }
-    echo "<title>$izena - Erreserbatu - $ordua</title>";
+    echo "<title>Erreserbatu</title>";
     ?>
 
     <script>
@@ -54,7 +54,8 @@ session_start();
                 aukeratutakoEserlekuak.push({ id: eserlekuId, price: price });
                 seat.style.fill = "orange";
             }
-            document.getElementById("selectedCount").innerText = `Aukeratutako Eserleku Kopurua: ${aukeratutakoEserlekuak.length}`;
+            let selectedCountText = document.querySelector('[aria-label="Language selected: English"]') ? "Number of Seats Selected:" : "Aukeratutako Eserleku Kopurua:";
+            document.getElementById("selectedCount").innerText = `${selectedCountText} ${aukeratutakoEserlekuak.length}`;
         }
 
         function reserveSeats() {

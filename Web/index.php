@@ -6,7 +6,7 @@ session_start();
 
 <head>
     <?PHP require_once("head.php"); ?>
-    <title>El Umbral - Hasiera</title>
+    <title>Hasiera</title>
 </head>
 
 <body>

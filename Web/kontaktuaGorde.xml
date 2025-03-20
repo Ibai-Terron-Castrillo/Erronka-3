@@ -52,4 +52,16 @@
         <email>artia1619@hotmail.com</email>
         <testua>qwerty</testua>
     </mezua>
-<mezua><email>artia1619@hotmail.com</email><testua>wges</testua></mezua><mezua><email>aitorauzmen@gmail.com</email><testua>fg</testua></mezua></kontaktuak>
+    <mezua>
+        <email>artia1619@hotmail.com</email>
+        <testua>wges</testua>
+    </mezua>
+    <mezua>
+        <email>aitorauzmen@gmail.com</email>
+        <testua>fg</testua>
+    </mezua>
+    <mezua>
+        <email>ibaiter335@gmail.com</email>
+        <testua>Muy buen cine, recomendado</testua>
+    </mezua>
+</kontaktuak>

@@ -33,7 +33,7 @@ FROM `erronka3`.`pelikula` WHERE id = $id";
         $zuzendaria = $row['zuzendaria'];
         $kartela = $row['kartela'];
         $trailerra = $row['trailerra'];
-        echo "<title>$izena - El Umbral</title>";
+        echo "<title>$izena</title>";
     }
     ?>
 </head>

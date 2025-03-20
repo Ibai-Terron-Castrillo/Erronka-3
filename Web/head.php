@@ -13,3 +13,9 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 }
 ?>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://cdn.weglot.com/weglot.min.js"></script>
+<script>
+    Weglot.initialize({
+        api_key: 'wg_2740f880290fa5fb47c98cae2de5059c6'
+    });
+</script>
