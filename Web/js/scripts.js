@@ -19,6 +19,7 @@ $(document).ready(function () {
       dataType: 'json',
       success: function (data) {
         if (data.length > 0) {
+          let text = document.querySelector('[aria-label="Language selected: English"]') ? "More Information" : "Informazio Gehiago";
           data.forEach(function (movies) {
             $('#movies').append(`
                                 <div class="col-md-4 mb-5">
@@ -27,7 +28,7 @@ $(document).ready(function () {
                                           <h2 class="card-title">${movies.izena}</h2>
                                           <img src="${movies.kartela}" alt="" style="width:200px; height: 300px;">
                                       </div>
-                                      <div class="card-footer"><a class="btn btn-primary btn-sm" href="pelikula.php?id=${movies.id}">Informazio Gehiago</a></div>
+                                      <div class="card-footer"><a class="btn btn-primary btn-sm" href="pelikula.php?id=${movies.id}">${text}</a></div>
                                   </div>
                               </div>
                             `)
