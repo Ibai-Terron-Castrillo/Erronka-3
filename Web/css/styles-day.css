@@ -11415,6 +11415,75 @@ body {
   color: white !important; /* Texto oscuro para contraste */
 }
 
+.seat {
+  display: inline-block;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.seat svg {
+  transition: transform 0.2s;
+}
+
+.seat:hover svg {
+  transform: scale(1.1);
+}
+
+.seat rect {
+  rx: 10;
+  ry: 10;
+}
+
+.pantaila {
+  margin-top: 20px;
+  background-color: white;
+  width: 75%;
+  margin: 0 auto;
+  text-align: center;
+  border-radius: 10px;
+  height: 40px;
+  margin-top: 20px;
+  font-size: 10px;
+}
+
+.zinema-container {
+  overflow-x: auto;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.zinema {
+  text-align: center;
+  width: 150%;
+  background-color: #4a4a4a;
+  border-radius: 10px;
+  height: fit-content;
+  margin: 50px auto;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .zinema {
+      width: 160%;
+      margin-bottom: 20%;
+  }
+  .zinetitle{
+    width: 100% !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .zinema {
+      width: 42%;
+  }
+}
+
+.topnav {
+  width: 100%;
+}
 
 header {
     background-color: #333333 !important; /* Gris oscuro */
