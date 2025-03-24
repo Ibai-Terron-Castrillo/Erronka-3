@@ -10,11 +10,8 @@ session_start();
 </head>
 
 <body>
-    <!-- navbar-->
     <?PHP require_once("nav.php"); ?>
-    <!-- Page Content-->
     <div class="container px-4 px-lg-5">
-        <!-- Heading Row-->
         <div class="row gx-4 gx-lg-5 align-items-center my-5">
             <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="assets/cine.jpg" alt="..." /></div>
             <div class="card col-lg-5">
@@ -28,7 +25,6 @@ session_start();
                 ?>
             </div>
         </div>
-        <!-- Call to Action-->
         <div class="card text-white bg-secondary my-5 py-4 text-center">
             <div class="card-body">
                 <p class="text-white m-0">Ikus itzazu gure karteleran eskuragarri dauden filmak!
@@ -64,7 +60,6 @@ session_start();
                 <button class="btn btn-primary" id="search-button" type="submit">Bilatu</button>
             </form>
         </div>
-        <!-- Content Row-->
         <div class="row gx-4 gx-lg-5" id="movies">
 
         </div>

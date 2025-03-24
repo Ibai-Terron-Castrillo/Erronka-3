@@ -70,10 +70,6 @@ try {
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
     }
-    /*$stmt = $pdo->prepare("SELECT id, izena, kartela FROM pelikula LIMIT :limit OFFSET :offset");
-    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-    $stmt->execute();*/
 
     $movies = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

@@ -35,7 +35,6 @@ FROM `erronka3`.`bezeroa` WHERE id = $id";
     }
     ?>
     <div class="login">
-        <!-- Heading Row-->
         <div class="row gx-4 gx-lg-5 align-items-center my-5">
             <div class="card col-lg-5">
                 <h1 class="font-weight-light">Profila Editatu</h1>

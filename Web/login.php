@@ -10,11 +10,8 @@ session_start();
 </head>
 
 <body>
-    <!-- navbar-->
     <?PHP require_once("nav.php"); ?>
-    <!-- Page Content-->
     <div class="login">
-        <!-- Heading Row-->
         <div class="row gx-4 gx-lg-5 align-items-center my-5">
             <div class="card col-lg-5">
                 <h1 class="font-weight-light">Saioa Hasi</h1>

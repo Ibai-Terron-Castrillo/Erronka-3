@@ -13,7 +13,6 @@ session_start();
 </head>
 
 <body>
-    <!-- navbar-->
     <?PHP require_once("nav.php");
     if (isset($_SESSION['id'])) {
         $id = intval($_SESSION['id']);
@@ -36,9 +35,7 @@ FROM `erronka3`.`bezeroa` WHERE id = $id";
         $pasahitza = $row['pasahitza'];
     }
     ?>
-    <!-- Page Content-->
     <div class="container profile px-4 px-lg-5">
-        <!-- Heading Row-->
         <div class="row gx-4 gx-lg-5 my-5">
             <div class="card col-lg-5">
                 <h1 class="font-weight-light"><?PHP echo $izena; ?></h1>

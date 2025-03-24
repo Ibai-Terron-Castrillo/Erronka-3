@@ -39,11 +39,8 @@ FROM `erronka3`.`pelikula` WHERE id = $id";
 </head>
 
 <body>
-    <!-- navbar-->
     <?PHP require_once("nav.php"); ?>
-    <!-- Page Content-->
     <div class="container-pelikula px-4 px-lg-5">
-        <!-- Heading Row-->
         <div class="row gx-4 gx-lg-5 my-5">
             <div class="card col-lg-5">
                 <h1 class="font-weight-light"><?PHP echo $izena; ?></h1>
@@ -64,7 +61,6 @@ FROM `erronka3`.`pelikula` WHERE id = $id";
                 <p class="text-white m-0"><b>Zuzendaria:</b> <?PHP echo $zuzendaria; ?></p>
             </div>
         </div>
-        <!-- Call to Action-->
         <div class="card text-white bg-secondary my-5 py-4 text-center">
             <div class="card-body">
                 <?php

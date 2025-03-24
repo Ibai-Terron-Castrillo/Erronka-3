@@ -8,11 +8,9 @@ session_start();
 
     <?php require_once("nav.php"); ?>
 
-    <!-- Sección Guri Buruz -->
     <section class="guri-buruz py-5">
         <div class="container">
             
-            <!-- Introducción con imagen y texto en un solo bloque gris -->
             <div class="card text-white bg-secondary my-5 py-4 text-center">
                 <div class="row align-items-center">
                     <div class="col-lg-6">
@@ -34,7 +32,6 @@ session_start();
                 </div>
             </div>
 
-            <!-- Gure Misioa eta Ikuspegia en dos bloques iguales -->
             <div class="row mt-5">
                 <div class="col-md-6">
                     <div class="card text-white bg-secondary my-3 py-4 text-center">
@@ -68,7 +65,6 @@ session_start();
                 </div>
             </div>
 
-            <!-- Gure Taldea -->
             <div class="card text-white bg-secondary my-5 py-4 text-center">
                 <h3 class="gold-title">Gure Taldea</h3>
                 <p>

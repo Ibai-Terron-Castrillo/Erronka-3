@@ -5,19 +5,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $filePath = "kontaktuaGorde.xml";
 
-    // Cargar el archivo XML o crear uno nuevo si no existe
     if (file_exists($filePath)) {
         $xml = simplexml_load_file($filePath);
     } else {
         $xml = simplexml_load_string("<?xml version='1.0' encoding='UTF-8'?><kontaktuak></kontaktuak>");
     }
 
-    // Añadir nuevo mensaje
     $mezuaElement = $xml->addChild("mezua");
     $mezuaElement->addChild("email", htmlspecialchars($email));
     $mezuaElement->addChild("testua", htmlspecialchars($mezua));
 
-    // Guardar cambios en el archivo XML
     $xml->asXML($filePath);
 
     echo "Mezua gorde da: " . htmlspecialchars($filePath);
