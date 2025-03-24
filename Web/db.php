@@ -3,7 +3,7 @@
 function konexioaSortu()
 {
 
-    $servername = "172.16.237.169";
+    $servername = "172.16.237.169:3307";
     $username = "el-umbral";
     $password = "6Taldea6";
     $dbname = "erronka3";
