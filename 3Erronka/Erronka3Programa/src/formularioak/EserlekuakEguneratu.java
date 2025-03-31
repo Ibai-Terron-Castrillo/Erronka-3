@@ -30,10 +30,6 @@ public class EserlekuakEguneratu extends JDialog {
         setLocationRelativeTo(frame);
         
         JPanel panel = new JPanel(new GridLayout(5, 2));
-        panel.add(new JLabel("ID:"));
-        txtId = new JTextField(String.valueOf(eserlekua.getId()));
-        txtId.setEditable(false);
-        panel.add(txtId);
         
         panel.add(new JLabel("ID Areto:"));
         txtIdAreto = new JTextField(String.valueOf(eserlekua.getIdAreto()));

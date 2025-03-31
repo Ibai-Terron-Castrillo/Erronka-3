@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="MauiApp1.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:MauiApp1"
+    Shell.FlyoutBehavior="Disabled">
+
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Shell">
+                <Setter Property="Shell.TitleView">
+                    <Setter.Value>
+                        <Grid>
+                            <Label Text="El Umbral" 
+                                   HorizontalOptions="Center" 
+                                   VerticalOptions="Center" 
+                                   FontSize="24" 
+                                   FontAttributes="Bold" />
+                        </Grid>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <ShellContent
+        Title="El Umbral"
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage" />
+    <ShellContent
+    Title="Zure Erreserbak"
+    ContentTemplate="{DataTemplate local:HomePage}"
+    Route="HomePage" />
+
+</Shell>
+

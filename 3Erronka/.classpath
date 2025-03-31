@@ -7,5 +7,6 @@
 	</classpathentry>
 	<classpathentry kind="src" path="Erronka3Programa/src"/>
 	<classpathentry kind="lib" path="C:/Users/aitor/Downloads/mysql-connector-j-9.2.0/mysql-connector-j-9.2.0/mysql-connector-j-9.2.0.jar"/>
+	<classpathentry kind="lib" path="Erronka3Programa/src/recursos/mysql-connector-j-9.1.0.jar"/>
 	<classpathentry kind="output" path="Erronka3Programa/bin"/>
 </classpath>

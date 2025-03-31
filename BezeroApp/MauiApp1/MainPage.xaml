@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.MainPage"
+             BackgroundColor="White">
+
+    <StackLayout Padding="20" Spacing="15">
+        <Entry x:Name="_emailEntry" Placeholder="Email" PlaceholderColor="Gray" TextColor="Black" BackgroundColor="LightGray" />
+        <Entry x:Name="_passwordEntry" Placeholder="Pasahitza" IsPassword="True" PlaceholderColor="Gray" TextColor="Black" BackgroundColor="LightGray" />
+        <Button x:Name="_loginButton" Text="Saioa Hasi" BackgroundColor="#B22222" TextColor="White" />
+    </StackLayout>
+</ContentPage>
+
