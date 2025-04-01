@@ -91,7 +91,82 @@ public class SarrerakKudeatu {
         return lista;
     }
 
-    
+    // Filtro: ID Erreserbaren arabera
+    public List<Sarrerak> filtratuSarrerakErreserbaId(int idErreserba) {
+        List<Sarrerak> lista = new ArrayList<>();
+        String sql = "SELECT * FROM sarrera WHERE id_erreserba = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idErreserba);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    double prezioa = rs.getDouble("prezioa");
+                    int idEserleku = rs.getInt("id_eserleku");
+
+                    Sarrerak sarrera = new Sarrerak(id, idErreserba, prezioa, idEserleku);
+                    lista.add(sarrera);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+    // Filtro: Prezio tartearen arabera
+    public List<Sarrerak> filtratuSarrerakPrezioTartea(double prezioMin, double prezioMax) {
+        List<Sarrerak> lista = new ArrayList<>();
+        String sql = "SELECT * FROM sarrera WHERE prezioa BETWEEN ? AND ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setDouble(1, prezioMin);
+            ps.setDouble(2, prezioMax);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    int idErreserba = rs.getInt("id_erreserba");
+                    double prezioa = rs.getDouble("prezioa");
+                    int idEserleku = rs.getInt("id_eserleku");
+
+                    Sarrerak sarrera = new Sarrerak(id, idErreserba, prezioa, idEserleku);
+                    lista.add(sarrera);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+    // Filtro: ID Eserlekuaren arabera
+    public List<Sarrerak> filtratuSarrerakEserlekuId(int idEserleku) {
+        List<Sarrerak> lista = new ArrayList<>();
+        String sql = "SELECT * FROM sarrera WHERE id_eserleku = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idEserleku);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    int idErreserba = rs.getInt("id_erreserba");
+                    double prezioa = rs.getDouble("prezioa");
+
+                    Sarrerak sarrera = new Sarrerak(id, idErreserba, prezioa, idEserleku);
+                    lista.add(sarrera);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
 
     public void eguneratuSarrera(Sarrerak sarrera) {
         String sql = "UPDATE sarrera SET id_erreserba = ?, prezioa = ?, id_eserleku = ? WHERE id = ?";

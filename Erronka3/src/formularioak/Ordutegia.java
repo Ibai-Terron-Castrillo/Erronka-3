@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import klaseak.Ordutegiak;
 import mantenimendua.OrdutegiaKudeatu;
 import mantenimendua.OrdutegiaTaula;
 
@@ -36,6 +37,7 @@ public class Ordutegia extends JFrame {
         JMenu menu = new JMenu("Aukerak");
         menuBar.add(menu);
 
+        // Opción para volver a la pantalla principal
         JMenuItem bueltatu = new JMenuItem("Sarrerara Bueltatu");
         bueltatu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -47,52 +49,52 @@ public class Ordutegia extends JFrame {
         });
         menu.add(bueltatu);
 
+        // Opción para aplicar filtros de búsqueda
         JMenuItem filtratu = new JMenuItem("Bilaketa Filtroak Aplikatu");
         filtratu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String irizpidea = JOptionPane.showInputDialog(Ordutegia.this, 
-                        "Sartu bilaketa irizpidea (Izena, Mota, etab...):");
+                // Crear un cuadro de diálogo para elegir el criterio de filtrado
+                String[] opciones = { "Ordua", "Eguna", "Egun Tartea" }; // Opciones de filtrado
+                String irizpidea = (String) JOptionPane.showInputDialog(
+                        Ordutegia.this,
+                        "Aukeratu irizpidea:",
+                        "Filtroa Aplikatu",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opciones,
+                        opciones[0]); // Valor por defecto es "Ordua"
+
+                // Si el usuario selecciona un criterio de filtrado
                 if (irizpidea != null && !irizpidea.trim().isEmpty()) {
-                    List<klaseak.Ordutegia> filtratutakoLista = dao.filtratuOrdutegia(irizpidea);
-                    OrdutegiaTaula newModel = new OrdutegiaTaula(filtratutakoLista);
-                    table.setModel(newModel);
+                    switch (irizpidea) {
+                        case "Ordua":
+                            filtrarPorOrdua();
+                            break;
+                        case "Eguna":
+                            filtrarPorEguna();
+                            break;
+                        case "Egun Tartea":
+                            filtrarPorRangoEguna();
+                            break;
+                        default:
+                            break;
+                    }
                 } else {
-                    List<klaseak.Ordutegia> listaOriginal = dao.lortuOrdutegia();
-                    table.setModel(new OrdutegiaTaula(listaOriginal));
+                    // Si no se elige ningún filtro, mostrar todos los registros
+                    taulaBirkargatu();
                 }
             }
         });
         menu.add(filtratu);
-        
+
+        // Opción para recargar la tabla
         JMenuItem birkargatu = new JMenuItem("Taula Birkargatu");
         birkargatu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 taulaBirkargatu();
             }
-
-            private void taulaBirkargatu() {
-                List<klaseak.Ordutegia> lista = dao.lortuOrdutegia();
-                OrdutegiaTaula model = new OrdutegiaTaula(lista);
-                if (table == null) {
-                    table = new JTable(model);
-                    JScrollPane scrollPane = new JScrollPane(table);
-                    contentPane.add(scrollPane, BorderLayout.CENTER);
-                } else {
-                    table.setModel(model);
-                }
-            }
         });
         menu.add(birkargatu);
-        
-        JMenuItem saioaItxi = new JMenuItem("Saioa Itxi");
-        saioaItxi.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                Login login = new Login();
-                login.setVisible(true);
-                dispose();
-            }
-        });
-        menu.add(saioaItxi);
 
         setJMenuBar(menuBar);
 
@@ -102,12 +104,45 @@ public class Ordutegia extends JFrame {
         setContentPane(contentPane);
 
         dao = new OrdutegiaKudeatu();
-        List<klaseak.Ordutegia> lista = dao.lortuOrdutegia();
-        OrdutegiaTaula model = new OrdutegiaTaula(lista);
-        table = new JTable(model);
+        taulaBirkargatu();
+    }
 
-        JScrollPane scrollPane = new JScrollPane(table);
-        contentPane.add(scrollPane, BorderLayout.CENTER);
+    private void filtrarPorOrdua() {
+        String ordua = JOptionPane.showInputDialog(this, "Sartu ordua (HH:MM):", "Orduaren arabera filtratu", JOptionPane.QUESTION_MESSAGE);
+        if (ordua != null && !ordua.trim().isEmpty()) {
+            List<Ordutegiak> filtratutakoLista = dao.filtratuOrdutegiaOrdua(ordua);
+            table.setModel(new OrdutegiaTaula(filtratutakoLista));
+        }
+    }
+
+    private void filtrarPorEguna() {
+        String eguna = JOptionPane.showInputDialog(this, "Sartu eguna (YYYY-MM-DD):", "Egunaren arabera filtratu", JOptionPane.QUESTION_MESSAGE);
+        if (eguna != null && !eguna.trim().isEmpty()) {
+            List<Ordutegiak> filtratutakoLista = dao.filtratuOrdutegiaEguna(eguna);
+            table.setModel(new OrdutegiaTaula(filtratutakoLista));
+        }
+    }
+
+    private void filtrarPorRangoEguna() {
+        String egunaHasiera = JOptionPane.showInputDialog(this, "Sartu hasierako eguna (YYYY-MM-DD):", "Rangoaren hasiera", JOptionPane.QUESTION_MESSAGE);
+        String egunaAmaiera = JOptionPane.showInputDialog(this, "Sartu amaierako eguna (YYYY-MM-DD):", "Rangoaren amaiera", JOptionPane.QUESTION_MESSAGE);
+
+        if (egunaHasiera != null && egunaAmaiera != null && !egunaHasiera.trim().isEmpty() && !egunaAmaiera.trim().isEmpty()) {
+            List<Ordutegiak> filtratutakoLista = dao.filtratuOrdutegiaRangoEguna(egunaHasiera, egunaAmaiera);
+            table.setModel(new OrdutegiaTaula(filtratutakoLista));
+        }
+    }
+
+    protected void taulaBirkargatu() {
+        List<Ordutegiak> lista = dao.lortuOrdutegia();
+        OrdutegiaTaula model = new OrdutegiaTaula(lista);
+        if (table == null) {
+            table = new JTable(model);
+            JScrollPane scrollPane = new JScrollPane(table);
+            contentPane.add(scrollPane, BorderLayout.CENTER);
+        } else {
+            table.setModel(model);
+        }
     }
 
     public static void main(String[] args) {

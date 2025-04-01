@@ -12,74 +12,105 @@ import util.DatabaseConnection;
 
 public class PelikulakKudeatu {
 
-    public List<Pelikula> lortuHornitzaileak() {
-        Connection conn = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
-        List<Pelikula> lista = new ArrayList<>();
-        try {
-            conn = DatabaseConnection.getConnection();
-            String sql = "SELECT * FROM Hornitzailea";
-
-            pst = conn.prepareStatement(sql);
-            rs = pst.executeQuery();
-
-            while (rs.next()) {
-                int id = rs.getInt("idHornitzailea");
-                String Izena = rs.getString("Izena");
-                String Deskripzioa = rs.getString("Deskripzioa");
-                String Telefonoa = rs.getString("Telefonoa");
-                String Email = rs.getString("Email");
-
-                
-            }
-        } catch (Exception e) {
-            System.out.println("Errorea");
-        }
-        return lista;
-    }
-
    
 
       
 
-    public void sortuHornitzailea(Pelikula Hornitzailea) {
-        String sql = "INSERT INTO Hornitzailea (Izena, Deskripzioa, Telefonoa, Email) VALUES (?, ?, ?, ?)";
-        try {
-            Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, Hornitzailea.getIzena());
-          
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    public List<String> lortuGeneroDistinct() {
+	    List<String> generos = new ArrayList<>();
+	    String sql = "SELECT DISTINCT generoa FROM pelikula"; // Consulta para obtener géneros únicos
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql);
+	         ResultSet rs = ps.executeQuery()) {
 
-    public void eguneratuHornitzailea(Pelikula Hornitzailea) {
-        String sql = "UPDATE Hornitzailea SET Izena = ?, Deskripzioa = ?, Telefonoa = ?, Email = ? WHERE idHornitzailea = ?";
-        try {
-            Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, Hornitzailea.getIzena());
-           
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+	        while (rs.next()) {
+	            generos.add(rs.getString("generoa")); // Agregar cada género a la lista
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return generos;
+	}
 
-    public void ezabatuHornitzailea(int idHornitzailea) {
-        String sql = "DELETE FROM Hornitzailea WHERE idHornitzailea = ?";
-        try {
-            Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, idHornitzailea);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+	// Método para filtrar películas por género
+	public List<Pelikula> filtratuPelikulakGenero(String genero) {
+	    List<Pelikula> pelikulak = new ArrayList<>();
+	    String sql = "SELECT id, izena, iraunaldia, generoa, sailkapena, sinopsia, aktoreak, zuzendaria, kartela, trailerra FROM pelikula WHERE generoa = ?";
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+	        ps.setString(1, genero); // Establecer el parámetro del género
+	        try (ResultSet rs = ps.executeQuery()) {
+	            while (rs.next()) {
+	                // Crear un objeto Pelikula con los datos obtenidos
+	                Pelikula pelikula = new Pelikula(
+	                    rs.getInt("id"),
+	                    rs.getString("izena"),
+	                    rs.getInt("iraunaldia"),
+	                    rs.getString("generoa"),
+	                    rs.getString("sailkapena"),
+	                    rs.getString("sinopsia"),
+	                    rs.getString("aktoreak"),
+	                    rs.getString("zuzendaria"),
+	                    rs.getString("kartela"),
+	                    rs.getString("trailerra")
+	                );
+	                pelikulak.add(pelikula); // Agregar la película a la lista
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return pelikulak;
+	}
+	
+	public List<String> lortuDistinctSailkapena() {
+	    List<String> sailkapenak = new ArrayList<>();
+	    String sql = "SELECT DISTINCT sailkapena FROM pelikula"; // Consulta para obtener las calificaciones únicas
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql);
+	         ResultSet rs = ps.executeQuery()) {
+
+	        while (rs.next()) {
+	            sailkapenak.add(rs.getString("sailkapena")); // Agregar cada calificación a la lista
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return sailkapenak;
+	}
+	public List<Pelikula> filtratuPelikulakSailkapena(String sailkapena) {
+	    List<Pelikula> pelikulak = new ArrayList<>();
+	    String sql = "SELECT id, izena, iraunaldia, generoa, sailkapena, sinopsia, aktoreak, zuzendaria, kartela, trailerra FROM pelikula WHERE sailkapena = ?";
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+	        ps.setString(1, sailkapena); // Establecer el parámetro del sailkapena
+	        try (ResultSet rs = ps.executeQuery()) {
+	            while (rs.next()) {
+	                // Crear un objeto Pelikula con los datos obtenidos
+	                Pelikula pelikula = new Pelikula(
+	                    rs.getInt("id"),
+	                    rs.getString("izena"),
+	                    rs.getInt("iraunaldia"),
+	                    rs.getString("generoa"),
+	                    rs.getString("sailkapena"),
+	                    rs.getString("sinopsia"),
+	                    rs.getString("aktoreak"),
+	                    rs.getString("zuzendaria"),
+	                    rs.getString("kartela"),
+	                    rs.getString("trailerra")
+	                );
+	                pelikulak.add(pelikula); // Agregar la película a la lista
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return pelikulak;
+	}
+
+   
 
     public List<Pelikula> lortuPelikulak() {
         Connection conn = null;

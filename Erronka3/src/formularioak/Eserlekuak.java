@@ -37,6 +37,7 @@ public class Eserlekuak extends JFrame {
         JMenu menu = new JMenu("Aukerak");
         menuBar.add(menu);
 
+        // Opción para volver a la pantalla principal
         JMenuItem bueltatu = new JMenuItem("Sarrerara Bueltatu");
         bueltatu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -48,30 +49,114 @@ public class Eserlekuak extends JFrame {
         });
         menu.add(bueltatu);
 
+        // Opción para aplicar filtros de búsqueda
         JMenuItem filtratu = new JMenuItem("Bilaketa Filtroak Aplikatu");
-        filtratu.addActionListener(e -> {
-            String irizpidea = JOptionPane.showInputDialog(Eserlekuak.this, 
-                    "Sartu bilaketa irizpidea (Izena, data, etab...):");
-            if (irizpidea != null && !irizpidea.trim().isEmpty()) {
-                List<Eserlekua> filtratutakoLista = dao.filtratuEserlekuak(irizpidea);
-                EserlekuaTaula newModel = new EserlekuaTaula(filtratutakoLista);
-                table.setModel(newModel);
-            } else {
-                List<Eserlekua> listaOriginal = dao.lortuEserlekuak();
-                table.setModel(new EserlekuaTaula(listaOriginal));
+        filtratu.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Crear un cuadro de diálogo para elegir el criterio de filtrado
+                String[] opciones = { "ID", "ID Areto", "Zenbakia", "Beteta" }; // Opciones de filtrado
+                String irizpidea = (String) JOptionPane.showInputDialog(
+                        Eserlekuak.this,
+                        "Aukeratu irizpidea:",
+                        "Filtroa Aplikatu",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opciones,
+                        opciones[0]); // Valor por defecto es "ID"
+
+                // Si el usuario selecciona un criterio de filtrado
+                if (irizpidea != null && !irizpidea.trim().isEmpty()) {
+                    if (irizpidea.equals("ID")) {
+                        // Filtrar por ID
+                        String id = JOptionPane.showInputDialog(Eserlekuak.this,
+                                "Sartu eserlekuaren ID-a:",
+                                "ID-ren arabera filtratu",
+                                JOptionPane.QUESTION_MESSAGE);
+
+                        if (id != null && !id.trim().isEmpty()) {
+                            List<Eserlekua> filtratutakoLista = dao.filtratuEserlekuak(id);
+                            EserlekuaTaula newModel = new EserlekuaTaula(filtratutakoLista);
+                            table.setModel(newModel);
+                        }
+                    } else if (irizpidea.equals("ID Areto")) {
+                        // Filtrar por ID Areto
+                        String idAreto = JOptionPane.showInputDialog(Eserlekuak.this,
+                                "Sartu aretoaren ID-a:",
+                                "ID Aretoaren arabera filtratu",
+                                JOptionPane.QUESTION_MESSAGE);
+
+                        if (idAreto != null && !idAreto.trim().isEmpty()) {
+                            try {
+                                int idAretoInt = Integer.parseInt(idAreto);
+                                List<Eserlekua> filtratutakoLista = dao.filtratuEserlekuakAretoId(idAretoInt);
+                                EserlekuaTaula newModel = new EserlekuaTaula(filtratutakoLista);
+                                table.setModel(newModel);
+                            } catch (NumberFormatException ex) {
+                                JOptionPane.showMessageDialog(Eserlekuak.this,
+                                        "ID Areto zenbakizkoa izan behar da.",
+                                        "Errorea",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    } else if (irizpidea.equals("Zenbakia")) {
+                        // Filtrar por Zenbakia
+                        String zenbakia = JOptionPane.showInputDialog(Eserlekuak.this,
+                                "Sartu eserlekuaren zenbakia:",
+                                "Zenbakiaren arabera filtratu",
+                                JOptionPane.QUESTION_MESSAGE);
+
+                        if (zenbakia != null && !zenbakia.trim().isEmpty()) {
+                            List<Eserlekua> filtratutakoLista = dao.filtratuEserlekuak(zenbakia);
+                            EserlekuaTaula newModel = new EserlekuaTaula(filtratutakoLista);
+                            table.setModel(newModel);
+                        }
+                    } else if (irizpidea.equals("Beteta")) {
+                        // Filtrar por estado (Beteta)
+                        String beteta = JOptionPane.showInputDialog(Eserlekuak.this,
+                                "Sartu beteta egoera (true/false):",
+                                "Betetaren arabera filtratu",
+                                JOptionPane.QUESTION_MESSAGE);
+
+                        if (beteta != null && !beteta.trim().isEmpty()) {
+                            try {
+                                boolean betetaBool = Boolean.parseBoolean(beteta);
+                                List<Eserlekua> filtratutakoLista = dao.filtratuEserlekuakBeteta(betetaBool);
+                                EserlekuaTaula newModel = new EserlekuaTaula(filtratutakoLista);
+                                table.setModel(newModel);
+                            } catch (Exception ex) {
+                                JOptionPane.showMessageDialog(Eserlekuak.this,
+                                        "Beteta egoera true edo false izan behar da.",
+                                        "Errorea",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    }
+                } else {
+                    // Si no se elige ningún filtro, mostrar todos los registros
+                    List<Eserlekua> listaOriginal = dao.lortuEserlekuak();
+                    table.setModel(new EserlekuaTaula(listaOriginal));
+                }
             }
         });
         menu.add(filtratu);
 
+        // Opción para recargar la tabla
         JMenuItem birkargatu = new JMenuItem("Taula Birkargatu");
-        birkargatu.addActionListener(e -> taulaBirkargatu());
+        birkargatu.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                taulaBirkargatu();
+            }
+        });
         menu.add(birkargatu);
 
+        // Opción para cerrar sesión
         JMenuItem saioaItxi = new JMenuItem("Saioa Itxi");
-        saioaItxi.addActionListener(e -> {
-            Login login = new Login();
-            login.setVisible(true);
-            dispose();
+        saioaItxi.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Login login = new Login();
+                login.setVisible(true);
+                dispose();
+            }
         });
         menu.add(saioaItxi);
 

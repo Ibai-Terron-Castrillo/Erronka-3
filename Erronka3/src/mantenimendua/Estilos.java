@@ -2,7 +2,6 @@ package mantenimendua;
 
 import java.awt.Color;
 import java.awt.Font;
-
 import javax.swing.BorderFactory;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
@@ -33,20 +32,30 @@ public class Estilos {
             // Configurar colores globales
             UIManager.put("Panel.background", new Color(40, 40, 40)); // Fondo oscuro
             UIManager.put("Label.foreground", Color.WHITE);           // Texto blanco
-            UIManager.put("Button.background", new Color(60, 60, 60)); // Botón oscuro
-            UIManager.put("Button.foreground", Color.WHITE);          // Texto del botón blanco
 
             // Personalizar botones
-            UIManager.put("Button.background", new Color(178, 34, 34));
-            UIManager.put("Button.foreground", Color.WHITE);
-            UIManager.put("Button.border", BorderFactory.createLineBorder(new Color(255, 87, 34), 2));
+            Color rojoVino = new Color(178, 34, 34); // Rojo vino
+            Color rojoVinoOscuro = new Color(100, 0, 50); // Rojo vino más oscuro
+            Color textoBlanco = Color.WHITE;
+
+            UIManager.put("Button.background", rojoVino);             // Fondo de los botones
+            UIManager.put("Button.foreground", textoBlanco);          // Texto de los botones
+            UIManager.put("Button.pressedBackground", rojoVinoOscuro); // Fondo al hacer clic
+            UIManager.put("Button.hoverBackground", rojoVino.brighter()); // Fondo al pasar el mouse
+            UIManager.put("Button.border", BorderFactory.createLineBorder(rojoVino.brighter(), 2));
             UIManager.put("Button.font", new Font("Arial", Font.BOLD, 14));
 
+            // Personalizar botones de JOptionPane
+            UIManager.put("OptionPane.background", new Color(40, 40, 40)); // Fondo del cuadro de diálogo
+            UIManager.put("OptionPane.messageForeground", textoBlanco);   // Texto del mensaje
+
             // Personalizar etiquetas
-            UIManager.put("Label.foreground", Color.WHITE);
+            UIManager.put("Label.foreground", textoBlanco);
             UIManager.put("Label.font", new Font("Arial", Font.PLAIN, 16));
 
         } catch (Exception e) {
+            // Manejo de excepciones con más información
+            System.err.println("Error al aplicar los estilos: " + e.getMessage());
             e.printStackTrace();
         }
     }

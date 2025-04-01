@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +12,7 @@ import util.DatabaseConnection;
 
 public class aretoaKudeatu {
 
-    private static final Statement DatabaseConnection = null;
-
-	public List<Aretoa> lortuAretoak() {
+    public List<Aretoa> lortuAretoak() {
         Connection conn = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
@@ -49,83 +46,121 @@ public class aretoaKudeatu {
         return lista;
     }
 
-    public List<Aretoa> filtratuAretoak(String irizpidea) {
+    // Filtrar por nombre (izena)
+    public List<Aretoa> filtratuAretoakIzena(String izena) {
         List<Aretoa> lista = new ArrayList<>();
-        String sql = "SELECT id, izena, edukiera FROM aretoa "
-                   + "WHERE CAST(id AS CHAR) LIKE ? "
-                   + "OR izena LIKE ? "
-                   + "OR CAST(edukiera AS CHAR) LIKE ?";
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            conn = DatabaseConnection.getConnection();
-            ps = conn.prepareStatement(sql);
+        String sql = "SELECT * FROM aretoa WHERE izena LIKE ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            String likeIrizpidea = "%" + irizpidea + "%";
-            ps.setString(1, likeIrizpidea);
-            ps.setString(2, likeIrizpidea);
-            ps.setString(3, likeIrizpidea);
+            ps.setString(1, "%" + izena + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String aretoIzena = rs.getString("izena");
+                    int edukiera = rs.getInt("edukiera");
 
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String izena = rs.getString("izena");
-                int edukiera = rs.getInt("edukiera");
-
-                Aretoa aretoa = new Aretoa(id, izena, edukiera);
-                lista.add(aretoa);
+                    Aretoa aretoa = new Aretoa(id, aretoIzena, edukiera);
+                    lista.add(aretoa);
+                }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (ps != null) ps.close();
-                if (conn != null) conn.close();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
         }
         return lista;
     }
 
-    public void sortuAretoa(Aretoa aretoa) {
-        String sql = "INSERT INTO aretoa (izena, edukiera) VALUES (?, ?)";
-        try {
-            Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, aretoa.getIzena());
-            ps.setInt(2, aretoa.getEdukiera());
-            ps.executeUpdate();
+    // Filtrar por capacidad (edukiera)
+    public List<Aretoa> filtratuAretoakKapazitatea(int kapazitatea) {
+        List<Aretoa> lista = new ArrayList<>();
+        String sql = "SELECT * FROM aretoa WHERE edukiera >= ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, kapazitatea);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String izena = rs.getString("izena");
+                    int edukiera = rs.getInt("edukiera");
+
+                    Aretoa aretoa = new Aretoa(id, izena, edukiera);
+                    lista.add(aretoa);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return lista;
     }
 
-    public void eguneratuAretoa(Aretoa aretoa) {
+    // Obtener un areto por su ID
+    public Aretoa lortuAretoaById(int id) {
+        Aretoa aretoa = null;
+        String sql = "SELECT * FROM aretoa WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String izena = rs.getString("izena");
+                    int edukiera = rs.getInt("edukiera");
+
+                    aretoa = new Aretoa(id, izena, edukiera);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return aretoa;
+    }
+
+    // Eliminar un areto por su ID
+    public boolean ezabatuAretoa(int id) {
+        String sql = "DELETE FROM aretoa WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Actualizar un areto
+    public boolean eguneratuAretoa(Aretoa aretoa) {
         String sql = "UPDATE aretoa SET izena = ?, edukiera = ? WHERE id = ?";
-        try {
-            Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setString(1, aretoa.getIzena());
             ps.setInt(2, aretoa.getEdukiera());
             ps.setInt(3, aretoa.getId());
-            ps.executeUpdate();
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
-    public void ezabatuAretoa(int id) {
-        String sql = "DELETE FROM aretoa WHERE id = ?";
-        try {
-            Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, id);
-            ps.executeUpdate();
+    // Agregar un nuevo areto
+    public boolean sortuAretoa(Aretoa aretoa) {
+        String sql = "INSERT INTO aretoa (izena, edukiera) VALUES (?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, aretoa.getIzena());
+            ps.setInt(2, aretoa.getEdukiera());
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 }

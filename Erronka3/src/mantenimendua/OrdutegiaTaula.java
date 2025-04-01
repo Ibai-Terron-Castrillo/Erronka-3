@@ -4,17 +4,17 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import klaseak.Ordutegia;
+import klaseak.Ordutegiak;
 
 public class OrdutegiaTaula extends AbstractTableModel {
-    private List<Ordutegia> lista;
+    private List<Ordutegiak> lista;
     private String[] columnNames = {"ID", "ID_PELIKULA", "ID_ARETO", "EGUNA", "ORDUA", "AMAITUA"};
 
-    public OrdutegiaTaula(List<Ordutegia> lista) {
+    public OrdutegiaTaula(List<Ordutegiak> lista) {
         this.lista = lista;
     }
 
-    public Ordutegia getOrdutegiaAt(int rowIndex) {
+    public Ordutegiak getOrdutegiaAt(int rowIndex) {
         return lista.get(rowIndex);
     }
     
@@ -35,7 +35,7 @@ public class OrdutegiaTaula extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Ordutegia b = lista.get(rowIndex);
+        Ordutegiak b = lista.get(rowIndex);
         switch(columnIndex) {
             case 0:
                 return b.getId();

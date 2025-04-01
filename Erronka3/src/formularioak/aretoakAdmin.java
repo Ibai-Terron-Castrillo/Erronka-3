@@ -38,16 +38,13 @@ public class aretoakAdmin extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1006, 780);
         setLocationRelativeTo(null);
-        
-        // Establecer tema
-       
 
-        // Menú superior con un estilo más atractivo
+        // Menú superior
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Aukerak");
         menuBar.add(menu);
 
-        // Botones con iconos y estilos personalizados
+        // Opción para agregar un nuevo areto
         JMenuItem sortu = new JMenuItem("Aretoa berria gehitu");
         sortu.setIcon(new ImageIcon("path/to/icon.png")); // Reemplazar con el icono deseado
         sortu.addActionListener(new ActionListener() {
@@ -58,6 +55,7 @@ public class aretoakAdmin extends JFrame {
         });
         menu.add(sortu);
 
+        // Opción para actualizar un areto
         JMenuItem eguneratu = new JMenuItem("Aretoaren datuak eguneratu");
         eguneratu.setIcon(new ImageIcon("path/to/icon.png"));
         eguneratu.addActionListener(new ActionListener() {
@@ -74,6 +72,7 @@ public class aretoakAdmin extends JFrame {
         });
         menu.add(eguneratu);
 
+        // Opción para eliminar un areto
         JMenuItem ezabatu = new JMenuItem("Areto bat ezabatu");
         ezabatu.setIcon(new ImageIcon("path/to/icon.png"));
         ezabatu.addActionListener(new ActionListener() {
@@ -95,8 +94,68 @@ public class aretoakAdmin extends JFrame {
         });
         menu.add(ezabatu);
 
+        // Opción para aplicar filtros de búsqueda
+        JMenuItem filtratu = new JMenuItem("Bilaketa Filtroak Aplikatu");
+        filtratu.setIcon(new ImageIcon("path/to/icon.png"));
+        filtratu.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Crear un cuadro de diálogo para elegir el criterio de filtrado
+                String[] opciones = { "Izena", "Edukiera" }; // Opciones de filtrado
+                String irizpidea = (String) JOptionPane.showInputDialog(
+                        aretoakAdmin.this,
+                        "Aukeratu irizpidea:",
+                        "Filtroa Aplikatu",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opciones,
+                        opciones[0]); // Valor por defecto es "Izena"
+
+                // Si el usuario selecciona un criterio de filtrado
+                if (irizpidea != null && !irizpidea.trim().isEmpty()) {
+                    if (irizpidea.equals("Izena")) {
+                        // Filtrar por nombre
+                        String izena = JOptionPane.showInputDialog(aretoakAdmin.this,
+                                "Sartu aretoaren izena:",
+                                "Izenaren arabera filtratu",
+                                JOptionPane.QUESTION_MESSAGE);
+
+                        if (izena != null && !izena.trim().isEmpty()) {
+                            List<Aretoa> filtratutakoLista = dao.filtratuAretoakIzena(izena);
+                            aretoaTaula newModel = new aretoaTaula(filtratutakoLista);
+                            table.setModel(newModel);
+                        }
+                    } else if (irizpidea.equals("Edukiera")) {
+                        // Filtrar por capacidad
+                        String edukiera = JOptionPane.showInputDialog(aretoakAdmin.this,
+                                "Sartu edukiera (zenbakizkoa):",
+                                "Edukieraren arabera filtratu",
+                                JOptionPane.QUESTION_MESSAGE);
+
+                        if (edukiera != null && !edukiera.trim().isEmpty()) {
+                            try {
+                                int kap = Integer.parseInt(edukiera);
+                                List<Aretoa> filtratutakoLista = dao.filtratuAretoakKapazitatea(kap);
+                                aretoaTaula newModel = new aretoaTaula(filtratutakoLista);
+                                table.setModel(newModel);
+                            } catch (NumberFormatException ex) {
+                                JOptionPane.showMessageDialog(aretoakAdmin.this,
+                                        "Edukiera zenbakizkoa izan behar da.",
+                                        "Errorea",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    }
+                } else {
+                    // Si no se elige ningún filtro, mostrar todos los aretoak
+                    List<Aretoa> listaOriginal = dao.lortuAretoak();
+                    table.setModel(new aretoaTaula(listaOriginal));
+                }
+            }
+        });
+        
+        menu.add(filtratu);
+
         JMenuItem bueltatu = new JMenuItem("Sarrerara Bueltatu");
-        bueltatu.setIcon(new ImageIcon("path/to/icon.png"));
         bueltatu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 SarreraAdmin sarrera = new SarreraAdmin();
@@ -106,25 +165,9 @@ public class aretoakAdmin extends JFrame {
             }
         });
         menu.add(bueltatu);
+        
 
-        JMenuItem filtratu = new JMenuItem("Bilaketa Filtroak Aplikatu");
-        filtratu.setIcon(new ImageIcon("path/to/icon.png"));
-        filtratu.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String irizpidea = JOptionPane.showInputDialog(aretoakAdmin.this, 
-                        "Sartu bilaketa irizpidea (Izena, etab...):");
-                if (irizpidea != null && !irizpidea.trim().isEmpty()) {
-                    List<Aretoa> filtratutakoLista = dao.filtratuAretoak(irizpidea);
-                    aretoaTaula newModel = new aretoaTaula(filtratutakoLista);
-                    table.setModel(newModel);
-                } else {
-                    List<Aretoa> listaOriginal = dao.lortuAretoak();
-                    table.setModel(new aretoaTaula(listaOriginal));
-                }
-            }
-        });
-        menu.add(filtratu);
-
+        // Opción para recargar la tabla
         JMenuItem birkargatu = new JMenuItem("Taula Birkargatu");
         birkargatu.setIcon(new ImageIcon("path/to/icon.png"));
         birkargatu.addActionListener(new ActionListener() {
@@ -134,6 +177,7 @@ public class aretoakAdmin extends JFrame {
         });
         menu.add(birkargatu);
 
+        // Opción para cerrar sesión
         JMenuItem saioaItxi = new JMenuItem("Saioa Itxi");
         saioaItxi.setIcon(new ImageIcon("path/to/icon.png"));
         saioaItxi.addActionListener(new ActionListener() {
@@ -185,5 +229,5 @@ public class aretoakAdmin extends JFrame {
             frame.setVisible(true);
         });
     }
+    
 }
-

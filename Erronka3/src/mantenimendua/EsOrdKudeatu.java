@@ -80,6 +80,84 @@ public class EsOrdKudeatu {
         return lista;
     }
 
+    // Filtrar por ID del eserlekua
+    public List<EsOrdutegia> filtratuEsOrdutegiakEserlekuaId(int idEserlekua) {
+        List<EsOrdutegia> lista = new ArrayList<>();
+        String sql = "SELECT * FROM eserlekua_ordutegian WHERE id_eserleku = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setInt(1, idEserlekua);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    int idOrdutegi = rs.getInt("id_ordutegi");
+                    boolean beteta = rs.getBoolean("beteta");
+
+                    EsOrdutegia esOrdutegia = new EsOrdutegia(id, idEserlekua, idOrdutegi, beteta);
+                    lista.add(esOrdutegia);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+    // Filtrar por ID del ordutegi
+    public List<EsOrdutegia> filtratuEsOrdutegiakOrdutegiId(int idOrdutegi) {
+        List<EsOrdutegia> lista = new ArrayList<>();
+        String sql = "SELECT * FROM eserlekua_ordutegian WHERE id_ordutegi = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setInt(1, idOrdutegi);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    int idEserlekua = rs.getInt("id_eserleku");
+                    boolean beteta = rs.getBoolean("beteta");
+
+                    EsOrdutegia esOrdutegia = new EsOrdutegia(id, idEserlekua, idOrdutegi, beteta);
+                    lista.add(esOrdutegia);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+    // Filtrar por estado (beteta)
+    public List<EsOrdutegia> filtratuEsOrdutegiakBeteta(boolean beteta) {
+        List<EsOrdutegia> lista = new ArrayList<>();
+        String sql = "SELECT * FROM eserlekua_ordutegian WHERE beteta = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setBoolean(1, beteta);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    int idEserlekua = rs.getInt("id_eserleku");
+                    int idOrdutegi = rs.getInt("id_ordutegi");
+
+                    EsOrdutegia esOrdutegia = new EsOrdutegia(id, idEserlekua, idOrdutegi, beteta);
+                    lista.add(esOrdutegia);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
     public void ezabatuEsOrdutegia(int id) {
         String sql = "DELETE FROM eserlekua_ordutegian WHERE id = ?";
 

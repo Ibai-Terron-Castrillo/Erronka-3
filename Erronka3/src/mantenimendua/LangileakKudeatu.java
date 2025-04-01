@@ -74,6 +74,114 @@ public class LangileakKudeatu {
         }
         return lista;
     }
+    public List<String> lortuHelbideDistinct() {
+        List<String> helbideak = new ArrayList<>();
+        String sql = "SELECT DISTINCT Helbidea FROM langilea";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                helbideak.add(rs.getString("Helbidea"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return helbideak;
+    }
+
+    public List<langilea> filtratuLangileakHelbidea(String helbidea) {
+        List<langilea> langileak = new ArrayList<>();
+        String sql = "SELECT * FROM langilea WHERE Helbidea = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, helbidea);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    langilea langile = new langilea(
+                        rs.getInt("Id"),
+                        rs.getString("Izena"),
+                        rs.getString("Abizena1"),
+                        rs.getString("Abizena2"),
+                        rs.getString("Erabiltzailea"),
+                        rs.getString("Pasahitza"),
+                        rs.getString("Email"),
+                        rs.getString("Telefonoa"),
+                        rs.getString("Nan"),
+                        rs.getString("Helbidea"),
+                        rs.getBoolean("Admin")
+                    );
+                    langileak.add(langile);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return langileak;
+    }
+
+    public List<langilea> filtratuLangileakAdmin(boolean isAdmin) {
+        List<langilea> langileak = new ArrayList<>();
+        String sql = "SELECT * FROM langilea WHERE Admin = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setBoolean(1, isAdmin);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    langilea langile = new langilea(
+                        rs.getInt("Id"),
+                        rs.getString("Izena"),
+                        rs.getString("Abizena1"),
+                        rs.getString("Abizena2"),
+                        rs.getString("Erabiltzailea"),
+                        rs.getString("Pasahitza"),
+                        rs.getString("Email"),
+                        rs.getString("Telefonoa"),
+                        rs.getString("Nan"),
+                        rs.getString("Helbidea"),
+                        rs.getBoolean("Admin")
+                    );
+                    langileak.add(langile);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return langileak;
+    }
+
+    public List<langilea> filtratuLangileakIzena(String izena) {
+        List<langilea> langileak = new ArrayList<>();
+        String sql = "SELECT * FROM langilea WHERE Izena LIKE ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, "%" + izena + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    langilea langile = new langilea(
+                        rs.getInt("Id"),
+                        rs.getString("Izena"),
+                        rs.getString("Abizena1"),
+                        rs.getString("Abizena2"),
+                        rs.getString("Erabiltzailea"),
+                        rs.getString("Pasahitza"),
+                        rs.getString("Email"),
+                        rs.getString("Telefonoa"),
+                        rs.getString("Nan"),
+                        rs.getString("Helbidea"),
+                        rs.getBoolean("Admin")
+                    );
+                    langileak.add(langile);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return langileak;
+    }
 
     public List<langilea> filtratuLangileak(String irizpidea) {
         List<langilea> lista = new ArrayList<>();
