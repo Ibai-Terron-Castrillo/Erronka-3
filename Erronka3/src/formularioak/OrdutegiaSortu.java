@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import klaseak.Ordutegia;
+import klaseak.Ordutegiak;
 import mantenimendua.OrdutegiaKudeatu;
 
 public class OrdutegiaSortu extends JFrame {
@@ -76,7 +76,7 @@ public class OrdutegiaSortu extends JFrame {
             String ordua = orduaField.getText();
             boolean amaitua = amaituaCheckBox.isSelected();
 
-            Ordutegia ordutegia = new Ordutegia(0, idPelikula, idAreto, eguna, ordua, amaitua);
+            Ordutegiak ordutegia = new Ordutegiak(0, idPelikula, idAreto, eguna, ordua, amaitua);
             dao.sortuOrdutegia(ordutegia);
             JOptionPane.showMessageDialog(this, "Ordutegia ondo sortu da!");
             dispose();

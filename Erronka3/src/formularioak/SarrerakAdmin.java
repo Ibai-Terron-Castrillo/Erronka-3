@@ -89,15 +89,32 @@ public class SarrerakAdmin extends JFrame {
         JMenuItem filtratu = new JMenuItem("Bilaketa Filtroak Aplikatu");
         filtratu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String irizpidea = JOptionPane.showInputDialog(SarrerakAdmin.this, 
-                        "Sartu bilaketa irizpidea (Izena, Mota, etab...):");
+                String[] opciones = { "ID Erreserba", "Prezio Tartea", "ID Eserleku" };
+                String irizpidea = (String) JOptionPane.showInputDialog(
+                        SarrerakAdmin.this,
+                        "Aukeratu irizpidea:",
+                        "Filtroa Aplikatu",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opciones,
+                        opciones[0]); // Valor por defecto es "ID Erreserba"
+
                 if (irizpidea != null && !irizpidea.trim().isEmpty()) {
-                    List<Sarrerak> filtratutakoLista = dao.filtratuSarrerak(irizpidea);
-                    sarrerakTaula newModel = new sarrerakTaula(filtratutakoLista);
-                    table.setModel(newModel);
+                    switch (irizpidea) {
+                        case "ID Erreserba":
+                            filtrarPorErreserbaId();
+                            break;
+                        case "Prezio Tartea":
+                            filtrarPorPrezioTartea();
+                            break;
+                        case "ID Eserleku":
+                            filtrarPorEserlekuId();
+                            break;
+                        default:
+                            break;
+                    }
                 } else {
-                    List<Sarrerak> listaOriginal = dao.lortuSarrerak();
-                    table.setModel(new sarrerakTaula(listaOriginal));
+                    taulaBirkargatu();
                 }
             }
         });
@@ -133,6 +150,8 @@ public class SarrerakAdmin extends JFrame {
         });
         menu.add(saioaItxi);
         setJMenuBar(menuBar);
+        
+        
 
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -141,6 +160,48 @@ public class SarrerakAdmin extends JFrame {
 
         dao = new SarrerakKudeatu();
         taulaBirkargatu();
+    }
+    
+    private void filtrarPorErreserbaId() {
+        String idErreserba = JOptionPane.showInputDialog(this, "Sartu Erreserbaren ID-a:", "ID Erreserbaren arabera filtratu", JOptionPane.QUESTION_MESSAGE);
+        if (idErreserba != null && !idErreserba.trim().isEmpty()) {
+            try {
+                int idErreserbaInt = Integer.parseInt(idErreserba);
+                List<Sarrerak> filtratutakoLista = dao.filtratuSarrerakErreserbaId(idErreserbaInt);
+                table.setModel(new sarrerakTaula(filtratutakoLista));
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "ID Erreserba zenbakizkoa izan behar da.", "Errorea", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void filtrarPorPrezioTartea() {
+        String prezioMin = JOptionPane.showInputDialog(this, "Sartu prezio minimoa:", "Prezio Tartearen arabera filtratu", JOptionPane.QUESTION_MESSAGE);
+        String prezioMax = JOptionPane.showInputDialog(this, "Sartu prezio maximoa:", "Prezio Tartearen arabera filtratu", JOptionPane.QUESTION_MESSAGE);
+
+        if (prezioMin != null && prezioMax != null && !prezioMin.trim().isEmpty() && !prezioMax.trim().isEmpty()) {
+            try {
+                double prezioMinDouble = Double.parseDouble(prezioMin);
+                double prezioMaxDouble = Double.parseDouble(prezioMax);
+                List<Sarrerak> filtratutakoLista = dao.filtratuSarrerakPrezioTartea(prezioMinDouble, prezioMaxDouble);
+                table.setModel(new sarrerakTaula(filtratutakoLista));
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Prezio minimoa eta maximoa zenbakizkoak izan behar dira.", "Errorea", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void filtrarPorEserlekuId() {
+        String idEserleku = JOptionPane.showInputDialog(this, "Sartu Eserlekuaren ID-a:", "ID Eserlekuaren arabera filtratu", JOptionPane.QUESTION_MESSAGE);
+        if (idEserleku != null && !idEserleku.trim().isEmpty()) {
+            try {
+                int idEserlekuInt = Integer.parseInt(idEserleku);
+                List<Sarrerak> filtratutakoLista = dao.filtratuSarrerakEserlekuId(idEserlekuInt);
+                table.setModel(new sarrerakTaula(filtratutakoLista));
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "ID Eserlekua zenbakizkoa izan behar da.", "Errorea", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     protected void taulaBirkargatu() {

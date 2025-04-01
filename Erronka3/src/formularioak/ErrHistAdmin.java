@@ -3,6 +3,7 @@ package formularioak;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -85,22 +86,85 @@ public class ErrHistAdmin extends JFrame {
         });
         menu.add(bueltatu);
 
+        // Opción para aplicar filtros de búsqueda
         JMenuItem filtratu = new JMenuItem("Bilaketa Filtroak Aplikatu");
         filtratu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String irizpidea = JOptionPane.showInputDialog(ErrHistAdmin.this, 
-                        "Sartu bilaketa irizpidea (Izena, etab...):");
+                // Crear un cuadro de diálogo para elegir el criterio de filtrado
+                String[] opciones = { "ID", "ID Bezero", "Amaiera Data" }; // Opciones de filtrado
+                String irizpidea = (String) JOptionPane.showInputDialog(
+                        ErrHistAdmin.this,
+                        "Aukeratu irizpidea:",
+                        "Filtroa Aplikatu",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opciones,
+                        opciones[0]); // Valor por defecto es "ID"
+
+                // Si el usuario selecciona un criterio de filtrado
                 if (irizpidea != null && !irizpidea.trim().isEmpty()) {
-                    List<ErrHistorikoa> filtratutakoLista = dao.filtratuEskaerak(irizpidea);
-                    ErrHistTaula newModel = new ErrHistTaula(filtratutakoLista);
-                    table.setModel(newModel);
+                    if (irizpidea.equals("ID")) {
+                        // Filtrar por ID
+                        String id = JOptionPane.showInputDialog(ErrHistAdmin.this,
+                                "Sartu erreserbaren ID-a:",
+                                "ID-ren arabera filtratu",
+                                JOptionPane.QUESTION_MESSAGE);
+
+                        if (id != null && !id.trim().isEmpty()) {
+                            List<ErrHistorikoa> filtratutakoLista = dao.filtratuEskaerak(id);
+                            ErrHistTaula newModel = new ErrHistTaula(filtratutakoLista);
+                            table.setModel(newModel);
+                        }
+                    } else if (irizpidea.equals("ID Bezero")) {
+                        // Filtrar por ID Bezero
+                        String idBezeroa = JOptionPane.showInputDialog(ErrHistAdmin.this,
+                                "Sartu bezeroaren ID-a:",
+                                "ID Bezeroaren arabera filtratu",
+                                JOptionPane.QUESTION_MESSAGE);
+
+                        if (idBezeroa != null && !idBezeroa.trim().isEmpty()) {
+                            try {
+                                int idBezero = Integer.parseInt(idBezeroa);
+                                List<ErrHistorikoa> filtratutakoLista = dao.filtratuEskaerakBezeroId(idBezero);
+                                ErrHistTaula newModel = new ErrHistTaula(filtratutakoLista);
+                                table.setModel(newModel);
+                            } catch (NumberFormatException ex) {
+                                JOptionPane.showMessageDialog(ErrHistAdmin.this,
+                                        "ID Bezero zenbakizkoa izan behar da.",
+                                        "Errorea",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    } else if (irizpidea.equals("Amaiera Data")) {
+                        // Filtrar por Amaiera Data
+                        String amaieraData = JOptionPane.showInputDialog(ErrHistAdmin.this,
+                                "Sartu amaiera data (YYYY-MM-DD):",
+                                "Amaiera Data-ren arabera filtratu",
+                                JOptionPane.QUESTION_MESSAGE);
+
+                        if (amaieraData != null && !amaieraData.trim().isEmpty()) {
+                            try {
+                                Date data = Date.valueOf(amaieraData);
+                                List<ErrHistorikoa> filtratutakoLista = dao.filtratuEskaerakAmaieraData(data);
+                                ErrHistTaula newModel = new ErrHistTaula(filtratutakoLista);
+                                table.setModel(newModel);
+                            } catch (IllegalArgumentException ex) {
+                                JOptionPane.showMessageDialog(ErrHistAdmin.this,
+                                        "Data formatu egokia izan behar da (YYYY-MM-DD).",
+                                        "Errorea",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    }
                 } else {
+                    // Si no se elige ningún filtro, mostrar todos los registros
                     List<ErrHistorikoa> listaOriginal = dao.lortuEskaerak();
                     table.setModel(new ErrHistTaula(listaOriginal));
                 }
             }
         });
         menu.add(filtratu);
+
 
         JMenuItem birkargatu = new JMenuItem("Taula Birkargatu");
         birkargatu.addActionListener(new ActionListener() {

@@ -80,6 +80,58 @@ public class EserlekuaKudeatu {
         return lista;
     }
 
+    // Filtrar por ID del areto
+    public List<Eserlekua> filtratuEserlekuakAretoId(int idAreto) {
+        List<Eserlekua> lista = new ArrayList<>();
+        String sql = "SELECT * FROM eserlekua WHERE id_areto = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setInt(1, idAreto);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    int zenbakia = rs.getInt("zenbakia");
+                    boolean beteta = rs.getBoolean("beteta");
+
+                    Eserlekua eserlekua = new Eserlekua(id, idAreto, zenbakia, beteta);
+                    lista.add(eserlekua);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+    // Filtrar por estado (beteta)
+    public List<Eserlekua> filtratuEserlekuakBeteta(boolean beteta) {
+        List<Eserlekua> lista = new ArrayList<>();
+        String sql = "SELECT * FROM eserlekua WHERE beteta = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setBoolean(1, beteta);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    int idAreto = rs.getInt("id_areto");
+                    int zenbakia = rs.getInt("zenbakia");
+
+                    Eserlekua eserlekua = new Eserlekua(id, idAreto, zenbakia, beteta);
+                    lista.add(eserlekua);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
     public void ezabatuEserlekua(int id) {
         String sql = "DELETE FROM eserlekua WHERE id = ?";
 

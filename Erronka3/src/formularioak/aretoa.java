@@ -37,6 +37,7 @@ public class aretoa extends JFrame {
         JMenu menu = new JMenu("Aukerak");
         menuBar.add(menu);
 
+        // Opción para volver a la pantalla principal
         JMenuItem bueltatu = new JMenuItem("Sarrerara Bueltatu");
         bueltatu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -48,23 +49,75 @@ public class aretoa extends JFrame {
         });
         menu.add(bueltatu);
 
+        // Opción para aplicar filtros de búsqueda
         JMenuItem filtratu = new JMenuItem("Bilaketa Filtroak Aplikatu");
         filtratu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String irizpidea = JOptionPane.showInputDialog(aretoa.this, 
-                        "Sartu bilaketa irizpidea (Izena, etab...):");
+                // Crear un cuadro de diálogo para elegir el criterio de filtrado
+                String[] opciones = { "Izena", "Edukiera" }; // Opciones de filtrado
+                String irizpidea = (String) JOptionPane.showInputDialog(
+                        aretoa.this,
+                        "Aukeratu irizpidea:",
+                        "Filtroa Aplikatu",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opciones,
+                        opciones[0]); // Valor por defecto es "Izena"
+
+                // Si el usuario selecciona un criterio de filtrado
                 if (irizpidea != null && !irizpidea.trim().isEmpty()) {
-                    List<Aretoa> filtratutakoLista = dao.filtratuAretoak(irizpidea);
-                    aretoaTaula newModel = new aretoaTaula(filtratutakoLista);
-                    table.setModel(newModel);
+                    if (irizpidea.equals("Izena")) {
+                        // Filtrar por nombre
+                        String izena = JOptionPane.showInputDialog(aretoa.this,
+                                "Sartu aretoaren izena:",
+                                "Izenaren arabera filtratu",
+                                JOptionPane.QUESTION_MESSAGE);
+
+                        if (izena != null && !izena.trim().isEmpty()) {
+                            List<Aretoa> filtratutakoLista = dao.filtratuAretoakIzena(izena);
+                            aretoaTaula newModel = new aretoaTaula(filtratutakoLista);
+                            table.setModel(newModel);
+                        }
+                    } else if (irizpidea.equals("Edukiera")) {
+                        // Filtrar por capacidad
+                        String edukiera = JOptionPane.showInputDialog(aretoa.this,
+                                "Sartu edukiera (zenbakizkoa):",
+                                "Edukieraren arabera filtratu",
+                                JOptionPane.QUESTION_MESSAGE);
+
+                        if (edukiera != null && !edukiera.trim().isEmpty()) {
+                            try {
+                                int kap = Integer.parseInt(edukiera);
+                                List<Aretoa> filtratutakoLista = dao.filtratuAretoakKapazitatea(kap);
+                                aretoaTaula newModel = new aretoaTaula(filtratutakoLista);
+                                table.setModel(newModel);
+                            } catch (NumberFormatException ex) {
+                                JOptionPane.showMessageDialog(aretoa.this,
+                                        "Edukiera zenbakizkoa izan behar da.",
+                                        "Errorea",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    }
                 } else {
+                    // Si no se elige ningún filtro, mostrar todos los aretoak
                     List<Aretoa> listaOriginal = dao.lortuAretoak();
                     table.setModel(new aretoaTaula(listaOriginal));
                 }
             }
         });
         menu.add(filtratu);
-        
+        JMenuItem bueltatu1 = new JMenuItem("Sarrerara Bueltatu");
+        bueltatu1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Sarrera sarrera = new Sarrera();
+                sarrera.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                sarrera.setVisible(true);
+                dispose();
+            }
+        });
+        menu.add(bueltatu1);
+        // Opción para recargar la tabla
         JMenuItem birkargatu = new JMenuItem("Taula Birkargatu");
         birkargatu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -84,7 +137,8 @@ public class aretoa extends JFrame {
             }
         });
         menu.add(birkargatu);
-        
+
+        // Opción para cerrar sesión
         JMenuItem saioaItxi = new JMenuItem("Saioa Itxi");
         saioaItxi.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

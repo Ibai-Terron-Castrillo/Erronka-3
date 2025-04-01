@@ -1,95 +1,214 @@
 package formularioak;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import org.kordamp.ikonli.swing.FontIcon;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import mantenimendua.Estilos;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.*;
 
 public class Sarrera extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
+    private JLabel imageLabel;
+    private static final String[] BUTTON_LABELS = {"Bezeroak", "Eskaerak", "Ordutegia", "EsOrdutegiak", "Eserlekuak", "Errerserba Historikoa", "Sarrerak", "Aretoak"};
+    private static final String[] CLASS_NAMES = {"Bezeroak", "Erreserbak", "Ordutegia", "EsOrdutegiak", "Eserlekuak", "ErrHist", "Sarrerakk", "aretoa"};
+    private CustomButton saioaItxiButton;
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    Sarrera frame = new Sarrera();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        Estilos.aplicarEstiloGlobal();
+        EventQueue.invokeLater(() -> {
+            try {
+                Sarrera frame = new Sarrera();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
 
     public Sarrera() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 800, 600);
-        contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
+        setBounds(0, 0, 1920, 1080);
+        contentPane = new JPanel() {
+            @Override
+            public void doLayout() {
+                int radius = 300; // Reduced radius to make the space smaller
+                int centerX = getWidth() / 2;
+                int centerY = getHeight() / 2;
+                int componentCount = getComponentCount();
+                double angleStep = 2 * Math.PI / (componentCount - 2);
+
+                if (imageLabel != null) {
+                    Dimension imageSize = imageLabel.getPreferredSize();
+                    imageLabel.setBounds(centerX - imageSize.width / 2, centerY - imageSize.height / 2, imageSize.width, imageSize.height);
+                }
+
+                int buttonIndex = 0;
+                for (int i = 0; i < componentCount; i++) {
+                    Component comp = getComponent(i);
+                    if (comp == imageLabel || comp == saioaItxiButton) continue;
+                    int x = (int) (centerX + radius * Math.cos(buttonIndex * angleStep) - comp.getPreferredSize().width / 2);
+                    int y = (int) (centerY + radius * Math.sin(buttonIndex * angleStep) - comp.getPreferredSize().height / 2);
+                    comp.setBounds(x, y, comp.getPreferredSize().width, comp.getPreferredSize().height);
+                    buttonIndex++;
+                }
+
+                saioaItxiButton.setBounds(20, 20, 200, 60);
+            }
+        };
+        contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         contentPane.setBackground(new Color(60, 63, 65));
         setContentPane(contentPane);
-        GridBagLayout gbl_contentPane = new GridBagLayout();
-        gbl_contentPane.columnWidths = new int[]{1, 1, 1, 1, 1};
-        gbl_contentPane.rowHeights = new int[]{1, 1, 1, 1, 1};
-        gbl_contentPane.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0};
-        gbl_contentPane.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0};
-        contentPane.setLayout(gbl_contentPane);
 
-        // Botones
-        addButton("Bezeroak", 1, 1, new Bezeroak());
-        addButton("Eskaerak", 2, 1, new Erreserbak());
-        addButton("Ordutegia", 3, 1, new Ordutegia());
-        addButton("EsOrdutegiak", 1, 2, new EsOrdutegiak());
-        addButton("Eserlekuak", 2, 2, new Eserlekuak());
-        addButton("Errerserba Historikoa", 3, 2, new ErrHist());
-        addButton("Sarrerak", 1, 3, new Sarrerakk());
-        addButton("Aretoak", 2, 3, new aretoa());
+        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/rsc/logo.png"));
+        Image scaledImage = originalIcon.getImage().getScaledInstance(350, 350, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        imageLabel = new JLabel(scaledIcon);
+        contentPane.add(imageLabel);
+
+        FontAwesomeSolid[] icons = {
+            FontAwesomeSolid.USERS, // Bezeroak
+            FontAwesomeSolid.CALENDAR_CHECK, // Eskaerak
+            FontAwesomeSolid.CLOCK, // Ordutegia
+            FontAwesomeSolid.CALENDAR_ALT, // EsOrdutegiak
+            FontAwesomeSolid.CHAIR, // Eserlekuak
+            FontAwesomeSolid.HISTORY, // Errerserba Historikoa
+            FontAwesomeSolid.TICKET_ALT, // Sarrerak
+            FontAwesomeSolid.BUILDING // Aretoak
+        };
+
+        for (int i = 0; i < BUTTON_LABELS.length; i++) {
+            String buttonLabel = BUTTON_LABELS[i];
+            FontAwesomeSolid icon = icons[i];
+            CustomButton button = createCircularButton(buttonLabel, icon);
+            contentPane.add(button);
+
+            final String className = CLASS_NAMES[i];
+            button.addActionListener(e -> openWindow(className));
+        }
+
+        saioaItxiButton = createRectangularButton("Saioa itxi", FontAwesomeSolid.SIGN_OUT_ALT);
+        saioaItxiButton.addActionListener(e -> {
+            Login loginWindow = new Login();
+            loginWindow.setVisible(true);
+            dispose();
+        });
+        contentPane.add(saioaItxiButton);
     }
 
-    private void addButton(String text, int gridx, int gridy, final JFrame nextFrame) {
-        JButton button = createButton(text);
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                nextFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                nextFrame.setVisible(true);
-                dispose();
+    private CustomButton createCircularButton(String text, FontAwesomeSolid icon) {
+        CustomButton button = new CustomButton("");
+        button.setContentAreaFilled(false);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setPreferredSize(new Dimension(200, 200));
+        button.setBackground(new Color(178, 34, 34));
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 18));
+
+        FontIcon iconLabel = FontIcon.of(icon, 32, Color.WHITE);
+        button.setIcon(iconLabel);
+
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setText(text);
+                button.setHover(true);
+                button.repaint();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setText("");
+                button.setHover(false);
+                button.repaint();
             }
         });
-        GridBagConstraints gbc_button = new GridBagConstraints();
-        gbc_button.fill = GridBagConstraints.BOTH;
-        gbc_button.insets = new Insets(10, 10, 10, 10);
-        gbc_button.gridx = gridx;
-        gbc_button.gridy = gridy;
-        contentPane.add(button, gbc_button);
+
+        return button;
     }
 
-    private JButton createButton(String text) {
-        JButton button = new JButton(text);
-        button.setFont(new Font("Tahoma", Font.PLAIN, 20));
-        button.setBackground(new Color(128, 0, 0)); // Rojo vino (dark red)
-        button.setForeground(Color.WHITE); // Texto blanco
-        button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(60, 63, 65), 2),
-                BorderFactory.createEmptyBorder(10, 20, 10, 20)));
-        
-        // Asegurar que el fondo del botón no se vea afectado por el sistema operativo
-        button.setOpaque(true);
+    private CustomButton createRectangularButton(String text, FontAwesomeSolid icon) {
+        CustomButton button = new CustomButton("");
         button.setContentAreaFilled(true);
+        button.setFocusPainted(false);
         button.setBorderPainted(true);
-        
+        button.setPreferredSize(new Dimension(200, 60));
+        button.setBackground(new Color(178, 34, 34));
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 18));
+
+        FontIcon iconLabel = FontIcon.of(icon, 32, Color.WHITE);
+        button.setIcon(iconLabel);
+
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setText(text);
+                button.setHover(true);
+                button.repaint();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setText("");
+                button.setHover(false);
+                button.repaint();
+            }
+        });
+
         return button;
+    }
+
+    private void openWindow(String className) {
+        try {
+            JFrame newFrame = (JFrame) Class.forName("formularioak." + className).getDeclaredConstructor().newInstance();
+            newFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            newFrame.setVisible(true);
+            dispose();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private class CustomButton extends JButton {
+        private static final long serialVersionUID = 1L;
+        private boolean hover = false;
+        private static final int PADDING = 10;
+
+        public CustomButton(String text) {
+            super(text);
+            setContentAreaFilled(false);
+            setFocusPainted(false);
+            setBorderPainted(false);
+        }
+
+        public void setHover(boolean hover) {
+            this.hover = hover;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+
+            int diameter = Math.min(getWidth(), getHeight()) - 2 * PADDING;
+            int x = (getWidth() - diameter) / 2;
+            int y = (getHeight() - diameter) / 2;
+
+            if (hover) {
+                g2.setColor(getBackground().brighter());
+            } else {
+                g2.setColor(getBackground());
+            }
+            g2.fillOval(x, y, diameter, diameter);
+
+            super.paintComponent(g);
+        }
     }
 }

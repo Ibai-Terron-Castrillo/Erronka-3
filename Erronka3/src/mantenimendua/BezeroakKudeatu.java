@@ -41,45 +41,114 @@ public class BezeroakKudeatu {
         }
         return lista;
     }
+    
+    
 
-    public List<Bezeroa> filtratuBezeroak(String irizpidea) {
+    public List<Bezeroa> lortuBezeroak1() {
         List<Bezeroa> lista = new ArrayList<>();
-        String sql = "SELECT id, izena, abizena1, abizena2, nan, email, pasahitza "
-                + "FROM bezeroa " + "WHERE CAST(id AS CHAR) LIKE ? " + "OR izena LIKE ? " + "OR abizena1 LIKE ? "
-                + "OR abizena2 LIKE ? " + "OR nan LIKE ? " + "OR email LIKE ? " + "OR pasahitza LIKE ?";
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
+        String sql = "SELECT * FROM bezeroa";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
 
-            conn = DatabaseConnection.getConnection();
-            ps = conn.prepareStatement(sql);
-
-            String likeIrizpidea = "%" + irizpidea + "%";
-            ps.setString(1, likeIrizpidea);
-            ps.setString(2, likeIrizpidea);
-            ps.setString(3, likeIrizpidea);
-            ps.setString(4, likeIrizpidea);
-            ps.setString(5, likeIrizpidea);
-            ps.setString(6, likeIrizpidea);
-            ps.setString(7, likeIrizpidea);
-
-            rs = ps.executeQuery();
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String izena = rs.getString("izena");
-                String abizena1 = rs.getString("abizena1");
-                String abizena2 = rs.getString("abizena2");
-                String nan = rs.getString("nan");
-                String email = rs.getString("email");
-                String pasahitza = rs.getString("pasahitza");
-
-                Bezeroa b = new Bezeroa(id, izena, abizena1, abizena2, nan, email, pasahitza);
-                lista.add(b);
+                Bezeroa bezeroa = new Bezeroa(
+                    rs.getInt("id"),
+                    rs.getString("izena"),
+                    rs.getString("abizena1"),
+                    rs.getString("abizena2"),
+                    rs.getString("nan"),
+                    rs.getString("email"),
+                    rs.getString("pasahitza")
+                );
+                lista.add(bezeroa);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
 
-        } catch (Exception e) {
-            System.out.println("Errorea");
+    // Filtrar bezeroak por nombre (Izena)
+    public List<Bezeroa> filtratuBezeroakIzena(String izena) {
+        List<Bezeroa> lista = new ArrayList<>();
+        String sql = "SELECT * FROM bezeroa WHERE izena LIKE ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, "%" + izena + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Bezeroa bezeroa = new Bezeroa(
+                        rs.getInt("id"),
+                        rs.getString("izena"),
+                        rs.getString("abizena1"),
+                        rs.getString("abizena2"),
+                        rs.getString("nan"),
+                        rs.getString("email"),
+                        rs.getString("pasahitza")
+                    );
+                    lista.add(bezeroa);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+    // Filtrar bezeroak por NAN
+    public List<Bezeroa> filtratuBezeroakNan(String nan) {
+        List<Bezeroa> lista = new ArrayList<>();
+        String sql = "SELECT * FROM bezeroa WHERE nan LIKE ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, "%" + nan + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Bezeroa bezeroa = new Bezeroa(
+                        rs.getInt("id"),
+                        rs.getString("izena"),
+                        rs.getString("abizena1"),
+                        rs.getString("abizena2"),
+                        rs.getString("nan"),
+                        rs.getString("email"),
+                        rs.getString("pasahitza")
+                    );
+                    lista.add(bezeroa);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+    // Filtrar bezeroak por email
+    public List<Bezeroa> filtratuBezeroakEmail(String email) {
+        List<Bezeroa> lista = new ArrayList<>();
+        String sql = "SELECT * FROM bezeroa WHERE email LIKE ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, "%" + email + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Bezeroa bezeroa = new Bezeroa(
+                        rs.getInt("id"),
+                        rs.getString("izena"),
+                        rs.getString("abizena1"),
+                        rs.getString("abizena2"),
+                        rs.getString("nan"),
+                        rs.getString("email"),
+                        rs.getString("pasahitza")
+                    );
+                    lista.add(bezeroa);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return lista;
     }

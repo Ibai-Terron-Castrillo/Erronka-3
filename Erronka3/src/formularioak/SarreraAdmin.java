@@ -1,246 +1,216 @@
 package formularioak;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.EmptyBorder;
+import org.kordamp.ikonli.swing.FontIcon;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import mantenimendua.Estilos;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.*;
 
 public class SarreraAdmin extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
+    private JLabel imageLabel;
+    private static final String[] BUTTON_LABELS = {"Bezeroak", "Langileak", "Erreserbak", "Ordutegia", "EsOrdutegiak", "Eserlekuak", "ErrHist", "Sarrerak", "Aretoa", "Pelikulak"};
+    private static final String[] CLASS_NAMES = {"BezeroakAdmin", "Langileak", "ErreserbakAdmin", "OrdutegiaAdmin", "EsOrdutegiakAdmin", "EserlekuaAdmin", "ErrHistAdmin", "SarrerakAdmin", "aretoakAdmin", "Pelikulak"};
+    private CustomButton saioaItxiButton;
 
-    /**
-     * Launch the application.
-     */
     public static void main(String[] args) {
-        try {
-            // Cambiar el Look and Feel a Nimbus
-            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    SarreraAdmin frame = new SarreraAdmin();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        Estilos.aplicarEstiloGlobal();
+        EventQueue.invokeLater(() -> {
+            try {
+                SarreraAdmin frame = new SarreraAdmin();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
 
-    /**
-     * Create the frame.
-     */
     public SarreraAdmin() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 800, 600);
-        contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
+        setBounds(0, 0, 1920, 1080);
+        contentPane = new JPanel() {
+            @Override
+            public void doLayout() {
+                int radius = 300; // Reduced radius to make the space smaller
+                int centerX = getWidth() / 2;
+                int centerY = getHeight() / 2;
+                int componentCount = getComponentCount();
+                double angleStep = 2 * Math.PI / (componentCount - 2);
+
+                if (imageLabel != null) {
+                    Dimension imageSize = imageLabel.getPreferredSize();
+                    imageLabel.setBounds(centerX - imageSize.width / 2, centerY - imageSize.height / 2, imageSize.width, imageSize.height);
+                }
+
+                int buttonIndex = 0;
+                for (int i = 0; i < componentCount; i++) {
+                    Component comp = getComponent(i);
+                    if (comp == imageLabel || comp == saioaItxiButton) continue;
+                    int x = (int) (centerX + radius * Math.cos(buttonIndex * angleStep) - comp.getPreferredSize().width / 2);
+                    int y = (int) (centerY + radius * Math.sin(buttonIndex * angleStep) - comp.getPreferredSize().height / 2);
+                    comp.setBounds(x, y, comp.getPreferredSize().width, comp.getPreferredSize().height);
+                    buttonIndex++;
+                }
+
+                saioaItxiButton.setBounds(20, 20, 200, 60);
+            }
+        };
+        contentPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         contentPane.setBackground(new Color(60, 63, 65));
         setContentPane(contentPane);
-        GridBagLayout gbl_contentPane = new GridBagLayout();
-        gbl_contentPane.columnWidths = new int[]{1, 1, 1, 1, 1};
-        gbl_contentPane.rowHeights = new int[]{1, 1, 1, 1, 1};
-        gbl_contentPane.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0};
-        gbl_contentPane.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0};
-        contentPane.setLayout(gbl_contentPane);
 
-        JButton btnBezeroak = createCircularButton("Bezeroak");
-        btnBezeroak.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                BezeroakAdmin bezeroak = new BezeroakAdmin();
-                bezeroak.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                bezeroak.setVisible(true);
-                dispose();
-            }
-        });
-        GridBagConstraints gbc_btnBezeroak = new GridBagConstraints();
-        gbc_btnBezeroak.fill = GridBagConstraints.BOTH;
-        gbc_btnBezeroak.insets = new Insets(10, 10, 10, 10);
-        gbc_btnBezeroak.gridx = 0;
-        gbc_btnBezeroak.gridy = 0;
-        contentPane.add(btnBezeroak, gbc_btnBezeroak);
-        
-        JButton btnLangileak = createCircularButton("Langileak");
-        btnLangileak.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                Langileak Langileak = new Langileak();
-                Langileak.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                Langileak.setVisible(true);
-                dispose();
-            }
-        });
-        GridBagConstraints gbc_btnLangileak = new GridBagConstraints();
-        gbc_btnLangileak.fill = GridBagConstraints.BOTH;
-        gbc_btnLangileak.insets = new Insets(10, 10, 10, 10);
-        gbc_btnLangileak.gridx = 1;
-        gbc_btnLangileak.gridy = 0;
-        contentPane.add(btnLangileak, gbc_btnLangileak);
+        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/rsc/logo.png"));
+        Image scaledImage = originalIcon.getImage().getScaledInstance(350, 350, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        imageLabel = new JLabel(scaledIcon);
+        contentPane.add(imageLabel);
 
-        JButton btnEskaerak = createCircularButton("Erreserbak");
-        btnEskaerak.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                ErreserbakAdmin eskaerak = new ErreserbakAdmin();
-                eskaerak.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                eskaerak.setVisible(true);
-                dispose();
-            }
-        });
-        GridBagConstraints gbc_btnEskaerak = new GridBagConstraints();
-        gbc_btnEskaerak.fill = GridBagConstraints.BOTH;
-        gbc_btnEskaerak.insets = new Insets(10, 10, 10, 10);
-        gbc_btnEskaerak.gridx = 2;
-        gbc_btnEskaerak.gridy = 0;
-        contentPane.add(btnEskaerak, gbc_btnEskaerak);
+        FontAwesomeSolid[] icons = {
+            FontAwesomeSolid.USERS, // Bezeroak
+            FontAwesomeSolid.USER_TIE, // Langileak
+            FontAwesomeSolid.CALENDAR_CHECK, // Erreserbak
+            FontAwesomeSolid.CLOCK, // Ordutegia
+            FontAwesomeSolid.CALENDAR_ALT, // EsOrdutegiak
+            FontAwesomeSolid.CHAIR, // Eserlekuak
+            FontAwesomeSolid.HISTORY, // ErrHist
+            FontAwesomeSolid.TICKET_ALT, // Sarrerak
+            FontAwesomeSolid.BUILDING, // Aretoa
+            FontAwesomeSolid.FILM // Pelikulak
+        };
 
-        JButton btnOrdutegia = createCircularButton("Ordutegia");
-        btnOrdutegia.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                OrdutegiaAdmin ordutegia = new OrdutegiaAdmin();
-                ordutegia.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                ordutegia.setVisible(true);
-                dispose();
-            }
-        });
-        GridBagConstraints gbc_btnOrdutegia = new GridBagConstraints();
-        gbc_btnOrdutegia.fill = GridBagConstraints.BOTH;
-        gbc_btnOrdutegia.insets = new Insets(10, 10, 10, 10);
-        gbc_btnOrdutegia.gridx = 3;
-        gbc_btnOrdutegia.gridy = 0;
-        contentPane.add(btnOrdutegia, gbc_btnOrdutegia);
+        for (int i = 0; i < BUTTON_LABELS.length; i++) {
+            String buttonLabel = BUTTON_LABELS[i];
+            FontAwesomeSolid icon = icons[i];
+            CustomButton button = createCircularButton(buttonLabel, icon);
+            contentPane.add(button);
 
-        JButton btnEsOrdutegiak = createCircularButton("EsOrdutegiak");
-        btnEsOrdutegiak.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                EsOrdutegiakAdmin esOrdutegiak = new EsOrdutegiakAdmin();
-                esOrdutegiak.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                esOrdutegiak.setVisible(true);
-                dispose();
-            }
-        });
-        GridBagConstraints gbc_btnEsOrdutegiak = new GridBagConstraints();
-        gbc_btnEsOrdutegiak.fill = GridBagConstraints.BOTH;
-        gbc_btnEsOrdutegiak.insets = new Insets(10, 10, 10, 10);
-        gbc_btnEsOrdutegiak.gridx = 0;
-        gbc_btnEsOrdutegiak.gridy = 1;
-        contentPane.add(btnEsOrdutegiak, gbc_btnEsOrdutegiak);
+            final String className = CLASS_NAMES[i];
+            button.addActionListener(e -> openWindow(className));
+        }
 
-        JButton btnEserlekuak = createCircularButton("Eserlekuak");
-        btnEserlekuak.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                EserlekuaAdmin eserlekuak = new EserlekuaAdmin();
-                eserlekuak.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                eserlekuak.setVisible(true);
-                dispose();
-            }
+        saioaItxiButton = createRectangularButton("Saioa itxi", FontAwesomeSolid.SIGN_OUT_ALT);
+        saioaItxiButton.addActionListener(e -> {
+            Login loginWindow = new Login();
+            loginWindow.setVisible(true);
+            dispose();
         });
-        GridBagConstraints gbc_btnEserlekuak = new GridBagConstraints();
-        gbc_btnEserlekuak.fill = GridBagConstraints.BOTH;
-        gbc_btnEserlekuak.insets = new Insets(10, 10, 10, 10);
-        gbc_btnEserlekuak.gridx = 1;
-        gbc_btnEserlekuak.gridy = 1;
-        contentPane.add(btnEserlekuak, gbc_btnEserlekuak);
-
-        JButton btnErrHist = createCircularButton("ErrHist");
-        btnErrHist.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                ErrHistAdmin errHist = new ErrHistAdmin();
-                errHist.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                errHist.setVisible(true);
-                dispose();
-            }
-        });
-        GridBagConstraints gbc_btnErrHist = new GridBagConstraints();
-        gbc_btnErrHist.fill = GridBagConstraints.BOTH;
-        gbc_btnErrHist.insets = new Insets(10, 10, 10, 10);
-        gbc_btnErrHist.gridx = 2;
-        gbc_btnErrHist.gridy = 1;
-        contentPane.add(btnErrHist, gbc_btnErrHist);
-
-        JButton btnSarrerakk = createCircularButton("Sarrerakk");
-        btnSarrerakk.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                SarrerakAdmin sarrerakk = new SarrerakAdmin();
-                sarrerakk.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                sarrerakk.setVisible(true);
-                dispose();
-            }
-        });
-        GridBagConstraints gbc_btnSarrerakk = new GridBagConstraints();
-        gbc_btnSarrerakk.fill = GridBagConstraints.BOTH;
-        gbc_btnSarrerakk.insets = new Insets(10, 10, 10, 10);
-        gbc_btnSarrerakk.gridx = 0;
-        gbc_btnSarrerakk.gridy = 2;
-        contentPane.add(btnSarrerakk, gbc_btnSarrerakk);
-
-        JButton btnAretoa = createCircularButton("Aretoa");
-        btnAretoa.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                aretoakAdmin aretoa = new aretoakAdmin();
-                aretoa.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                aretoa.setVisible(true);
-                dispose();
-            }
-        });
-        GridBagConstraints gbc_btnAretoa = new GridBagConstraints();
-        gbc_btnAretoa.fill = GridBagConstraints.BOTH;
-        gbc_btnAretoa.insets = new Insets(10, 10, 10, 10);
-        gbc_btnAretoa.gridx = 1;
-        gbc_btnAretoa.gridy = 2;
-        contentPane.add(btnAretoa, gbc_btnAretoa);
-
-        JButton btnPelikulak = createCircularButton("Pelikulak");
-        btnPelikulak.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                Pelikulak pelikulak = new Pelikulak();
-                pelikulak.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                pelikulak.setVisible(true);
-                dispose();
-            }
-        });
-        GridBagConstraints gbc_btnPelikulak = new GridBagConstraints();
-        gbc_btnPelikulak.fill = GridBagConstraints.BOTH;
-        gbc_btnPelikulak.insets = new Insets(10, 10, 10, 10);
-        gbc_btnPelikulak.gridx = 2;
-        gbc_btnPelikulak.gridy = 2;
-        contentPane.add(btnPelikulak, gbc_btnPelikulak);
+        contentPane.add(saioaItxiButton);
     }
-    
-    private JButton createCircularButton(String text) {
-        JButton button = new JButton(text);
-        button.setFont(new Font("Tahoma", Font.PLAIN, 20));
-        button.setBackground(new Color(128, 0, 0)); // Rojo vino (dark red)
-        button.setForeground(Color.WHITE); // Texto blanco
+
+    private CustomButton createCircularButton(String text, FontAwesomeSolid icon) {
+        CustomButton button = new CustomButton("");
+        button.setContentAreaFilled(false);
         button.setFocusPainted(false);
-        
-        // Establecer el tamaño del botón para que sea cuadrado
-        button.setPreferredSize(new java.awt.Dimension(100, 100)); // Ajusta el tamaño a tus necesidades
+        button.setBorderPainted(false);
+        button.setPreferredSize(new Dimension(200, 200));
+        button.setBackground(new Color(178, 34, 34));
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 18));
 
-        // Establecer forma circular utilizando un border
-        button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, true));
+        FontIcon iconLabel = FontIcon.of(icon, 32, Color.WHITE);
+        button.setIcon(iconLabel);
 
-        // Asegurar que el fondo del botón no se vea afectado por el sistema operativo
-        button.setOpaque(true);
-        button.setContentAreaFilled(true);
-        button.setBorderPainted(true);
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setText(text);
+                button.setHover(true);
+                button.repaint();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setText("");
+                button.setHover(false);
+                button.repaint();
+            }
+        });
 
         return button;
+    }
+
+    private CustomButton createRectangularButton(String text, FontAwesomeSolid icon) {
+        CustomButton button = new CustomButton("");
+        button.setContentAreaFilled(true);
+        button.setFocusPainted(false);
+        button.setBorderPainted(true);
+        button.setPreferredSize(new Dimension(200, 60));
+        button.setBackground(new Color(178, 34, 34));
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 18));
+
+        FontIcon iconLabel = FontIcon.of(icon, 32, Color.WHITE);
+        button.setIcon(iconLabel);
+
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setText(text);
+                button.setHover(true);
+                button.repaint();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setText("");
+                button.setHover(false);
+                button.repaint();
+            }
+        });
+
+        return button;
+    }
+
+    private void openWindow(String className) {
+        try {
+            JFrame newFrame = (JFrame) Class.forName("formularioak." + className).getDeclaredConstructor().newInstance();
+            newFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            newFrame.setVisible(true);
+            dispose();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private class CustomButton extends JButton {
+        private static final long serialVersionUID = 1L;
+        private boolean hover = false;
+        private static final int PADDING = 10;
+
+        public CustomButton(String text) {
+            super(text);
+            setContentAreaFilled(false);
+            setFocusPainted(false);
+            setBorderPainted(false);
+        }
+
+        public void setHover(boolean hover) {
+            this.hover = hover;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+
+            int diameter = Math.min(getWidth(), getHeight()) - 2 * PADDING;
+            int x = (getWidth() - diameter) / 2;
+            int y = (getHeight() - diameter) / 2;
+
+            if (hover) {
+                g2.setColor(getBackground().brighter());
+            } else {
+                g2.setColor(getBackground());
+            }
+            g2.fillOval(x, y, diameter, diameter);
+
+            super.paintComponent(g);
+        }
     }
 }

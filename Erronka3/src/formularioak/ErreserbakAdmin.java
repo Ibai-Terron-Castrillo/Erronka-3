@@ -28,7 +28,7 @@ public class ErreserbakAdmin extends JFrame {
     private ErreserbakKudeatu dao;
 
     public ErreserbakAdmin() {
-        setTitle("Eskaerak");
+        setTitle("Erreserbak - Administratzailea");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1006, 780);
         setLocationRelativeTo(null);
@@ -92,16 +92,70 @@ public class ErreserbakAdmin extends JFrame {
         });
         menu.add(bueltatu);
 
+     // Opción para aplicar filtros de búsqueda
         JMenuItem filtratu = new JMenuItem("Bilaketa Filtroak Aplikatu");
         filtratu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String irizpidea = JOptionPane.showInputDialog(ErreserbakAdmin.this, 
-                        "Sartu bilaketa irizpidea (Helbidea, Egoera, etab...):");
+                // Crear un cuadro de diálogo para elegir el criterio de filtrado
+                String[] opciones = { "ID", "ID Bezero", "ID Ordutegi", "Kopurua", "Egoera" }; // Opciones de filtrado
+                String irizpidea = (String) JOptionPane.showInputDialog(
+                        ErreserbakAdmin.this,
+                        "Aukeratu irizpidea:",
+                        "Filtroa Aplikatu",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opciones,
+                        opciones[0]); // Valor por defecto es "ID"
+
+                // Si el usuario selecciona un criterio de filtrado
                 if (irizpidea != null && !irizpidea.trim().isEmpty()) {
-                    List<Erreserba> filtratutakoLista = dao.filtratuEskaerak(irizpidea);
-                    ErreserbakTaula newModel = new ErreserbakTaula(filtratutakoLista);
-                    table.setModel(newModel);
+                    if (irizpidea.equals("ID")) {
+                        // Filtrar por ID
+                        String id = JOptionPane.showInputDialog(ErreserbakAdmin.this,
+                                "Sartu erreserbaren ID-a:",
+                                "ID-ren arabera filtratu",
+                                JOptionPane.QUESTION_MESSAGE);
+
+                        if (id != null && !id.trim().isEmpty()) {
+                            List<Erreserba> filtratutakoLista = dao.filtratuErreserbak(id);
+                            ErreserbakTaula newModel = new ErreserbakTaula(filtratutakoLista);
+                            table.setModel(newModel);
+                        }
+                    } else if (irizpidea.equals("ID Bezero")) {
+                        // Filtrar por ID Bezero
+                        String idBezeroa = JOptionPane.showInputDialog(ErreserbakAdmin.this,
+                                "Sartu bezeroaren ID-a:",
+                                "ID Bezeroaren arabera filtratu",
+                                JOptionPane.QUESTION_MESSAGE);
+
+                        if (idBezeroa != null && !idBezeroa.trim().isEmpty()) {
+                            try {
+                                int idBezero = Integer.parseInt(idBezeroa);
+                                List<Erreserba> filtratutakoLista = dao.filtratuErreserbakBezeroId(idBezero);
+                                ErreserbakTaula newModel = new ErreserbakTaula(filtratutakoLista);
+                                table.setModel(newModel);
+                            } catch (NumberFormatException ex) {
+                                JOptionPane.showMessageDialog(ErreserbakAdmin.this,
+                                        "ID Bezero zenbakizkoa izan behar da.",
+                                        "Errorea",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    } else if (irizpidea.equals("Egoera")) {
+                        // Filtrar por Egoera
+                        String egoera = JOptionPane.showInputDialog(ErreserbakAdmin.this,
+                                "Sartu erreserbaren egoera:",
+                                "Egoeraren arabera filtratu",
+                                JOptionPane.QUESTION_MESSAGE);
+
+                        if (egoera != null && !egoera.trim().isEmpty()) {
+                            List<Erreserba> filtratutakoLista = dao.filtratuErreserbakEgoera(egoera);
+                            ErreserbakTaula newModel = new ErreserbakTaula(filtratutakoLista);
+                            table.setModel(newModel);
+                        }
+                    }
                 } else {
+                    // Si no se elige ningún filtro, mostrar todas las reservas
                     List<Erreserba> listaOriginal = dao.lortuEskaerak();
                     table.setModel(new ErreserbakTaula(listaOriginal));
                 }

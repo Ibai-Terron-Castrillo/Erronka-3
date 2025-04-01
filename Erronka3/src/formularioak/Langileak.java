@@ -85,7 +85,7 @@ public class Langileak extends JFrame {
         JMenuItem bueltatu = new JMenuItem("Sarrerara Bueltatu");
         bueltatu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                SarrerakAdmin sarrera = new SarrerakAdmin();
+                SarreraAdmin sarrera = new SarreraAdmin();
                 sarrera.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 sarrera.setVisible(true);
                 dispose();
@@ -94,22 +94,73 @@ public class Langileak extends JFrame {
         menu.add(bueltatu);
 
         JMenuItem filtratu = new JMenuItem("Bilaketa Filtroak Aplikatu");
+
         filtratu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String irizpidea = JOptionPane.showInputDialog(Langileak.this, 
-                        "Sartu bilaketa irizpidea (Izena, NAN-a, etab...):");
-                if (irizpidea != null && !irizpidea.trim().isEmpty()) {
-                    List<langilea> filtratutakoLista = dao.filtratuLangileak(irizpidea);
-                    LangileakTaula newModel = new LangileakTaula(filtratutakoLista);
-                    table.setModel(newModel);
+                // Crear un cuadro de diálogo para elegir el criterio de filtrado
+                String[] opciones = { "Helbidea", "Admin", "Izena" }; // Opciones de filtrado
+                String criterio = (String) JOptionPane.showInputDialog(
+                        Langileak.this,
+                        "Aukeratu irizpidea:",
+                        "Filtroa Aplikatu",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opciones,
+                        opciones[0]); // Valor por defecto es "Helbidea"
+
+                // Si el usuario selecciona un criterio de filtrado
+                if (criterio != null && !criterio.trim().isEmpty()) {
+                    if (criterio.equals("Helbidea")) {
+                        // Filtrar por dirección ingresando texto
+                        String helbidea = JOptionPane.showInputDialog(Langileak.this,
+                                "Sartu helbidea:",
+                                "Helbidearen arabera filtratu",
+                                JOptionPane.QUESTION_MESSAGE);
+
+                        if (helbidea != null && !helbidea.trim().isEmpty()) {
+                            List<langilea> filtratutakoLangileak = dao.filtratuLangileakHelbidea(helbidea); // Filtrar por dirección
+                            LangileakTaula newModel = new LangileakTaula(filtratutakoLangileak);
+                            table.setModel(newModel);
+                        }
+                    } else if (criterio.equals("Admin")) {
+                        // Filtrar por rol de administrador
+                        String[] adminOpciones = { "Bai", "Ez" }; // Opciones: Sí o No
+                        String admin = (String) JOptionPane.showInputDialog(Langileak.this,
+                                "Admin aukeratu:",
+                                "Adminaren arabera filtratu",
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                adminOpciones,
+                                adminOpciones[0]); // Valor por defecto
+
+                        if (admin != null && !admin.trim().isEmpty()) {
+                            boolean isAdmin = admin.equals("Bai");
+                            List<langilea> filtratutakoLangileak = dao.filtratuLangileakAdmin(isAdmin); // Filtrar por admin
+                            LangileakTaula newModel = new LangileakTaula(filtratutakoLangileak);
+                            table.setModel(newModel);
+                        }
+                    } else if (criterio.equals("Izena")) {
+                        // Filtrar por nombre
+                        String izena = JOptionPane.showInputDialog(Langileak.this,
+                                "Langilearen izena sartu:",
+                                "Izenaren arabera filtratu",
+                                JOptionPane.QUESTION_MESSAGE);
+
+                        if (izena != null && !izena.trim().isEmpty()) {
+                            List<langilea> filtratutakoLangileak = dao.filtratuLangileakIzena(izena); // Filtrar por nombre
+                            LangileakTaula newModel = new LangileakTaula(filtratutakoLangileak);
+                            table.setModel(newModel);
+                        }
+                    }
                 } else {
+                    // Si no se elige ningún filtro, mostrar todos los empleados
                     List<langilea> listaOriginal = dao.lortuLangileak();
                     table.setModel(new LangileakTaula(listaOriginal));
                 }
             }
         });
+
         menu.add(filtratu);
-        
         JMenuItem birkargatu = new JMenuItem("Taula Birkargatu");
         birkargatu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

@@ -1,24 +1,17 @@
 package formularioak;
 
-import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import klaseak.langilea;
 import mantenimendua.Estilos;
 import mantenimendua.LangileakKudeatu;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Color;
+import java.awt.Font;
 
 public class Login extends JFrame {
 
@@ -84,13 +77,21 @@ public class Login extends JFrame {
         // Botón Atera
         btnAtera = new JButton("Atera");
         btnAtera.setBounds(50, 180, 130, 40);
-        btnAtera.addActionListener(e -> atera());
+        btnAtera.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                atera();
+            }
+        });
         contentPane.add(btnAtera);
 
         // Botón Sartu
         btnSartu = new JButton("Sartu");
         btnSartu.setBounds(210, 180, 130, 40);
-        btnSartu.addActionListener(e -> sartu());
+        btnSartu.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                sartu();
+            }
+        });
         contentPane.add(btnSartu);
     }
 
@@ -107,7 +108,7 @@ public class Login extends JFrame {
 
         if (lan != null) {
             JOptionPane.showMessageDialog(contentPane, "Ongi Etorri!");
-            this.dispose();
+            this.dispose(); 
 
             if (lan.isAdmin()) {
                 SarreraAdmin sarrera = new SarreraAdmin();

@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import klaseak.Ordutegia;
+import klaseak.Ordutegiak;
 import mantenimendua.OrdutegiaKudeatu;
 
 public class OrdutegiaEguneratu extends JFrame {
@@ -21,9 +21,9 @@ public class OrdutegiaEguneratu extends JFrame {
     private JTextField idField, idPelikulaField, idAretoField, egunaField, orduaField;
     private JCheckBox amaituaCheckBox;
     private OrdutegiaKudeatu dao;
-    private Ordutegia ordutegia;
+    private Ordutegiak ordutegia;
 
-    public OrdutegiaEguneratu(JFrame parent, OrdutegiaKudeatu dao, Ordutegia ordutegia) {
+    public OrdutegiaEguneratu(JFrame parent, OrdutegiaKudeatu dao, Ordutegiak ordutegia) {
         super("Ordutegia Eguneratu");
         this.dao = dao;
         this.ordutegia = ordutegia;
@@ -85,7 +85,7 @@ public class OrdutegiaEguneratu extends JFrame {
             String ordua = orduaField.getText();
             boolean amaitua = amaituaCheckBox.isSelected();
 
-            Ordutegia ordutegia = new Ordutegia(id, idPelikula, idAreto, eguna, ordua, amaitua);
+            Ordutegiak ordutegia = new Ordutegiak(id, idPelikula, idAreto, eguna, ordua, amaitua);
             dao.eguneratuOrdutegia(ordutegia);
             JOptionPane.showMessageDialog(this, "Ordutegia ondo eguneratu da!");
             dispose();
