@@ -11,4 +11,5 @@ module aaaaaaaaaaaaaaaaaaaaaaaaaaa {
 	requires org.kordamp.ikonli.fontawesome5;
 	requires layout;
 	requires kernel;
+	requires io;
 }

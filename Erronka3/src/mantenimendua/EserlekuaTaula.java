@@ -8,7 +8,7 @@ import klaseak.Eserlekua;
 
 public class EserlekuaTaula extends AbstractTableModel {
     private List<Eserlekua> lista;
-    private String[] columnNames = {"ID", "ID_ARETO", "ZENBAKIA", "BETETA"};
+    private String[] columnNames = {"ID", "ID_ARETO", "ZENBAKIA"};
 
     public EserlekuaTaula(List<Eserlekua> lista) {
         this.lista = lista;
@@ -40,7 +40,6 @@ public class EserlekuaTaula extends AbstractTableModel {
             case 0: return e.getId();
             case 1: return e.getIdAreto();
             case 2: return e.getZenbakia();
-            case 3: return e.isBeteta();
             default: return null;
         }
     }

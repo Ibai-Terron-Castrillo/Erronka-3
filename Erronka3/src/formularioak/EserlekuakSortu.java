@@ -38,10 +38,6 @@ public class EserlekuakSortu extends JDialog {
         txtZenbakia = new JTextField();
         panel.add(txtZenbakia);
         
-        panel.add(new JLabel("Beteta:"));
-        chkBeteta = new JCheckBox();
-        panel.add(chkBeteta);
-        
         JButton btnSortu = new JButton("Sortu");
         btnSortu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -65,11 +61,11 @@ public class EserlekuakSortu extends JDialog {
             int zenbakia = Integer.parseInt(txtZenbakia.getText());
             boolean beteta = chkBeteta.isSelected();
             
-            Eserlekua eserlekua = new Eserlekua(0, idAreto, zenbakia, beteta);
+            Eserlekua eserlekua = new Eserlekua(0, idAreto, zenbakia);
             dao.sortuEserlekua(eserlekua);
             dispose();
         } catch (Exception ex) {
-            ex.printStackTrace(); // Imprime la traza de la excepción
+            ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Datuak okerrak dira!", "Errorea", JOptionPane.ERROR_MESSAGE);
         }
     }

@@ -4,13 +4,11 @@ public class Eserlekua {
     private int id;
     private int idAreto;
     private int zenbakia;
-    private boolean beteta;
 
-    public Eserlekua(int id, int idAreto, int zenbakia, boolean beteta) {
+    public Eserlekua(int id, int idAreto, int zenbakia) {
         this.id = id;
         this.idAreto = idAreto;
         this.zenbakia = zenbakia;
-        this.beteta = beteta;
     }
 
     public int getId() {
@@ -37,11 +35,5 @@ public class Eserlekua {
         this.zenbakia = zenbakia;
     }
 
-    public boolean isBeteta() {
-        return beteta;
-    }
-
-    public void setBeteta(boolean beteta) {
-        this.beteta = beteta;
-    }
+    
 }

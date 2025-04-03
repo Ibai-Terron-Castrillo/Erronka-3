@@ -12,15 +12,13 @@ import util.DatabaseConnection;
 public class EserlekuaKudeatu {
 
     public void sortuEserlekua(Eserlekua eserlekua) {
-        String sql = "INSERT INTO eserlekua (id_areto, zenbakia, beteta) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO eserlekua (id_areto, zenbakia) VALUES (?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
             pst.setInt(1, eserlekua.getIdAreto());
             pst.setInt(2, eserlekua.getZenbakia());
-            pst.setBoolean(3, eserlekua.isBeteta());
-
             pst.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -39,9 +37,8 @@ public class EserlekuaKudeatu {
                 int id = rs.getInt("id");
                 int idAreto = rs.getInt("id_areto");
                 int zenbakia = rs.getInt("zenbakia");
-                boolean beteta = rs.getBoolean("beteta");
 
-                Eserlekua eserlekua = new Eserlekua(id, idAreto, zenbakia, beteta);
+                Eserlekua eserlekua = new Eserlekua(id, idAreto, zenbakia);
                 lista.add(eserlekua);
             }
         } catch (Exception e) {
@@ -52,7 +49,7 @@ public class EserlekuaKudeatu {
 
     public List<Eserlekua> filtratuEserlekuak(String irizpidea) {
         List<Eserlekua> lista = new ArrayList<>();
-        String sql = "SELECT * FROM eserlekua WHERE CAST(id AS CHAR) LIKE ? OR CAST(id_areto AS CHAR) LIKE ? OR CAST(zenbakia AS CHAR) LIKE ? OR CAST(beteta AS CHAR) LIKE ?";
+        String sql = "SELECT * FROM eserlekua WHERE CAST(id AS CHAR) LIKE ? OR CAST(id_areto AS CHAR) LIKE ? OR CAST(zenbakia AS CHAR) LIKE ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
@@ -61,16 +58,14 @@ public class EserlekuaKudeatu {
             pst.setString(1, likeIrizpidea);
             pst.setString(2, likeIrizpidea);
             pst.setString(3, likeIrizpidea);
-            pst.setString(4, likeIrizpidea);
 
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     int id = rs.getInt("id");
                     int idAreto = rs.getInt("id_areto");
                     int zenbakia = rs.getInt("zenbakia");
-                    boolean beteta = rs.getBoolean("beteta");
 
-                    Eserlekua eserlekua = new Eserlekua(id, idAreto, zenbakia, beteta);
+                    Eserlekua eserlekua = new Eserlekua(id, idAreto, zenbakia);
                     lista.add(eserlekua);
                 }
             }
@@ -94,35 +89,8 @@ public class EserlekuaKudeatu {
                 while (rs.next()) {
                     int id = rs.getInt("id");
                     int zenbakia = rs.getInt("zenbakia");
-                    boolean beteta = rs.getBoolean("beteta");
 
-                    Eserlekua eserlekua = new Eserlekua(id, idAreto, zenbakia, beteta);
-                    lista.add(eserlekua);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return lista;
-    }
-
-    // Filtrar por estado (beteta)
-    public List<Eserlekua> filtratuEserlekuakBeteta(boolean beteta) {
-        List<Eserlekua> lista = new ArrayList<>();
-        String sql = "SELECT * FROM eserlekua WHERE beteta = ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pst = conn.prepareStatement(sql)) {
-
-            pst.setBoolean(1, beteta);
-
-            try (ResultSet rs = pst.executeQuery()) {
-                while (rs.next()) {
-                    int id = rs.getInt("id");
-                    int idAreto = rs.getInt("id_areto");
-                    int zenbakia = rs.getInt("zenbakia");
-
-                    Eserlekua eserlekua = new Eserlekua(id, idAreto, zenbakia, beteta);
+                    Eserlekua eserlekua = new Eserlekua(id, idAreto, zenbakia);
                     lista.add(eserlekua);
                 }
             }
@@ -146,14 +114,13 @@ public class EserlekuaKudeatu {
     }
 
     public void eguneratuEserlekua(Eserlekua eserlekua) {
-        String sql = "UPDATE eserlekua SET id_areto = ?, zenbakia = ?, beteta = ? WHERE id = ?";
+        String sql = "UPDATE eserlekua SET id_areto = ?, zenbakia = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
             pst.setInt(1, eserlekua.getIdAreto());
             pst.setInt(2, eserlekua.getZenbakia());
-            pst.setBoolean(3, eserlekua.isBeteta());
             pst.setInt(4, eserlekua.getId());
 
             pst.executeUpdate();

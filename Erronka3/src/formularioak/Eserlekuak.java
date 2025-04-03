@@ -37,7 +37,6 @@ public class Eserlekuak extends JFrame {
         JMenu menu = new JMenu("Aukerak");
         menuBar.add(menu);
 
-        // Opción para volver a la pantalla principal
         JMenuItem bueltatu = new JMenuItem("Sarrerara Bueltatu");
         bueltatu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -49,12 +48,10 @@ public class Eserlekuak extends JFrame {
         });
         menu.add(bueltatu);
 
-        // Opción para aplicar filtros de búsqueda
         JMenuItem filtratu = new JMenuItem("Bilaketa Filtroak Aplikatu");
         filtratu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Crear un cuadro de diálogo para elegir el criterio de filtrado
-                String[] opciones = { "ID", "ID Areto", "Zenbakia", "Beteta" }; // Opciones de filtrado
+                String[] opciones = { "ID", "ID Areto", "Zenbakia"};
                 String irizpidea = (String) JOptionPane.showInputDialog(
                         Eserlekuak.this,
                         "Aukeratu irizpidea:",
@@ -62,12 +59,10 @@ public class Eserlekuak extends JFrame {
                         JOptionPane.QUESTION_MESSAGE,
                         null,
                         opciones,
-                        opciones[0]); // Valor por defecto es "ID"
+                        opciones[0]);
 
-                // Si el usuario selecciona un criterio de filtrado
                 if (irizpidea != null && !irizpidea.trim().isEmpty()) {
                     if (irizpidea.equals("ID")) {
-                        // Filtrar por ID
                         String id = JOptionPane.showInputDialog(Eserlekuak.this,
                                 "Sartu eserlekuaren ID-a:",
                                 "ID-ren arabera filtratu",
@@ -79,7 +74,6 @@ public class Eserlekuak extends JFrame {
                             table.setModel(newModel);
                         }
                     } else if (irizpidea.equals("ID Areto")) {
-                        // Filtrar por ID Areto
                         String idAreto = JOptionPane.showInputDialog(Eserlekuak.this,
                                 "Sartu aretoaren ID-a:",
                                 "ID Aretoaren arabera filtratu",
@@ -99,7 +93,6 @@ public class Eserlekuak extends JFrame {
                             }
                         }
                     } else if (irizpidea.equals("Zenbakia")) {
-                        // Filtrar por Zenbakia
                         String zenbakia = JOptionPane.showInputDialog(Eserlekuak.this,
                                 "Sartu eserlekuaren zenbakia:",
                                 "Zenbakiaren arabera filtratu",
@@ -110,29 +103,8 @@ public class Eserlekuak extends JFrame {
                             EserlekuaTaula newModel = new EserlekuaTaula(filtratutakoLista);
                             table.setModel(newModel);
                         }
-                    } else if (irizpidea.equals("Beteta")) {
-                        // Filtrar por estado (Beteta)
-                        String beteta = JOptionPane.showInputDialog(Eserlekuak.this,
-                                "Sartu beteta egoera (true/false):",
-                                "Betetaren arabera filtratu",
-                                JOptionPane.QUESTION_MESSAGE);
-
-                        if (beteta != null && !beteta.trim().isEmpty()) {
-                            try {
-                                boolean betetaBool = Boolean.parseBoolean(beteta);
-                                List<Eserlekua> filtratutakoLista = dao.filtratuEserlekuakBeteta(betetaBool);
-                                EserlekuaTaula newModel = new EserlekuaTaula(filtratutakoLista);
-                                table.setModel(newModel);
-                            } catch (Exception ex) {
-                                JOptionPane.showMessageDialog(Eserlekuak.this,
-                                        "Beteta egoera true edo false izan behar da.",
-                                        "Errorea",
-                                        JOptionPane.ERROR_MESSAGE);
-                            }
-                        }
-                    }
+                    } 
                 } else {
-                    // Si no se elige ningún filtro, mostrar todos los registros
                     List<Eserlekua> listaOriginal = dao.lortuEserlekuak();
                     table.setModel(new EserlekuaTaula(listaOriginal));
                 }
@@ -140,7 +112,6 @@ public class Eserlekuak extends JFrame {
         });
         menu.add(filtratu);
 
-        // Opción para recargar la tabla
         JMenuItem birkargatu = new JMenuItem("Taula Birkargatu");
         birkargatu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -149,7 +120,6 @@ public class Eserlekuak extends JFrame {
         });
         menu.add(birkargatu);
 
-        // Opción para cerrar sesión
         JMenuItem saioaItxi = new JMenuItem("Saioa Itxi");
         saioaItxi.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
